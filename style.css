@@ -9,7 +9,20 @@ body {
   font-family: Arial, sans-serif;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo {
+  width: 220px;
+  height: auto;
+}
+
 .center-text {
   color: white;
   font-size: 2rem;
+  text-align: center;
 }
