@@ -28,7 +28,7 @@ body, html {
 
 /* 1. Image Fade In */
 .main-image {
-  width: 300px;
+  width: 1080px;
   height: auto;
   opacity: 0;
   position: relative;
