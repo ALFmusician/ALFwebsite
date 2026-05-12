@@ -1,12 +1,14 @@
 /* style.css */
 body {
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Inhalt oben beginnen */
   background-color: green;
   font-family: Arial, sans-serif;
+  padding-top: 20px; /* Abstand nach oben */
+  box-sizing: border-box;
 }
 
 .content {
@@ -17,8 +19,10 @@ body {
 }
 
 .logo {
-  width: 720px;
+  max-width: 100%;
+  width: 1080px;
   height: auto;
+  display: block;
 }
 
 .center-text {
