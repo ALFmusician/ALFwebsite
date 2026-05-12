@@ -7,7 +7,7 @@ body {
   align-items: flex-start; /* Inhalt oben beginnen */
   background-color: green;
   font-family: Arial, sans-serif;
-  padding-top: 20px; /* Abstand nach oben */
+  padding-top: 0px; /* Abstand nach oben */
   box-sizing: border-box;
 }
 
