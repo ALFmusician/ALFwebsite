@@ -1,7 +1,8 @@
-/* style.css */
-
 :root {
-  --anim-speed: 0.8s;
+  --t-flash: 2s;
+  --t-logo-delay: 2.2s;
+  --t-text-delay: 3.2s;
+  --t-fall-delay: 6.5s;
   --bg-green: #008000;
 }
 
@@ -10,133 +11,10 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center; /* Changed to center for initial focus */
-  background-color: black;
-  font-family: Arial, sans-serif;
+  align-items: center;
+  background: black;
   overflow: hidden;
-  animation: bgToGreen 1s forwards 7s; /* Background turns green as letters fall */
-}
+  font-family: Arial, sans-serif;
 
-/* 1. Growing White Point */
-.white-point {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  background: white;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  animation: growPoint 2s forwards;
-  z-index: 10;
-}
-
-@keyframes growPoint {
-  to { transform: translate(-50%, -50%) scale(300); }
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  z-index: 1;
-  position: relative;
-}
-
-.image-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* 2. Logo Fade In */
-.logo {
-  width: 100%;
-  max-width: 1080px;
-  height: auto;
-  display: block;
-  opacity: 0;
-  animation: fadeIn 2s forwards 2s; /* Starts after white point */
-}
-
-.center-text {
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-
-  text-align: center;
-
-  padding: 2rem;
-
-  font-size: clamp(2rem, 6vw, 5rem);
-  color: white;
-}
-
-.letter {
-  display: inline-block;
-
-  opacity: 0;
-
-  animation:
-    letterEntry 0.8s forwards;
-}
-
-.inner {
-  display: inline-block;
-
-  animation:
-    letterFall 1.5s forwards 6.5s,
-    silverFlash 4s infinite 8.5s;
-}
-
-.space {
-  width: 1rem;
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-
-@keyframes letterEntry {
-  to {
-    opacity: 1;
-    transform: translateY(0); /* Centers on image */
-  }
-}
-
-@keyframes letterFall {
-  to {
-    /* Moves letters physically below the logo area */
-    transform: translateY(300px); 
-    color: #C0C0C0; /* Silver color */
-  }
-}
-
-@keyframes bgToGreen {
-  to { background-color: var(--bg-green); }
-}
-
-@keyframes silverFlash {
-  0%, 85%, 100% {
-    text-shadow: none;
-    filter: brightness(1);
-  }
-  92% {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff;
-    filter: brightness(2);
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .center-text { font-size: 3rem; }
-  @keyframes letterFall {
-    to { transform: translateY(200px); }
-  }
+  animation: bgToGreen 1s forwards 8s;
 }
