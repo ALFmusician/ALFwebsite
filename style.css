@@ -12,6 +12,9 @@ body {
   justify-content: center;
   align-items: flex-start;
   font-family: Arial, sans-serif;
+
+   padding-left: 77px;
+   padding-right: 77px;
 }
 
 /* GRÜNER RAHMEN LINKS/RECHTS (fixe Breite) */
