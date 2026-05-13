@@ -148,7 +148,7 @@ body {
 @keyframes fall {
   to {
     transform: translateY(300px);
-    color: #C0C0C0;
+    color: white;
   }
 }
 
