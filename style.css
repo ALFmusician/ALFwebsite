@@ -1,8 +1,7 @@
+/* style.css */
+
 :root {
-  --t-flash: 2s;
-  --t-logo-delay: 2.2s;
-  --t-text-delay: 3.2s;
-  --t-fall-delay: 6.5s;
+  --anim-speed: 0.8s;
   --bg-green: #008000;
 }
 
@@ -11,54 +10,36 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: black;
+  align-items: center; /* Changed to center for initial focus */
+  background-color: black;
   font-family: Arial, sans-serif;
   overflow: hidden;
-
-  animation: bgToGreen 1s forwards 8s;
+  animation: bgToGreen 1s forwards 7s; /* Background turns green as letters fall */
 }
 
-/* =========================
-   WHITE FLASH
-========================= */
-
+/* 1. Growing White Point */
 .white-point {
   position: fixed;
-  inset: 50%;
-  width: 20px;
-  height: 20px;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
   background: white;
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0);
-  animation: flashExpand var(--t-flash) ease-out forwards;
-  z-index: 10;
+  animation: growPoint 2s forwards;
+  z-index: 0;
 }
 
-@keyframes flashExpand {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(80);
-    opacity: 0;
-  }
+@keyframes growPoint {
+  to { transform: translate(-50%, -50%) scale(300); }
 }
-
-/* =========================
-   LAYOUT
-========================= */
 
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  position: relative;
   z-index: 1;
 }
 
@@ -69,95 +50,87 @@ body {
   align-items: center;
 }
 
-/* =========================
-   LOGO
-========================= */
-
+/* 2. Logo Fade In */
 .logo {
   width: 100%;
   max-width: 1080px;
   height: auto;
   display: block;
-
   opacity: 0;
-  transform: scale(1.02);
-
-  animation: logoIn 1.8s ease forwards var(--t-logo-delay);
+  animation: fadeIn 2s forwards 2s; /* Starts after white point */
 }
 
-@keyframes logoIn {
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* =========================
-   TEXT
-========================= */
-
+/* 3. Text Positioning (Starts OVER the image) */
 .center-text {
   position: absolute;
-  inset: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-
-  text-align: center;
-  padding: 2rem;
-
-  font-size: clamp(2rem, 6vw, 5rem);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: white;
+  font-size: clamp(2rem, 8vw, 5rem);
+  text-align: center;
+  display: flex;
+  margin: 0;
+  pointer-events: none;
 }
 
-/* LETTERS */
-
-.letter {
+.center-text span {
   display: inline-block;
   opacity: 0;
-  transform: translateY(20px);
-
-  animation: letterIn 0.8s ease forwards;
+  transform: translateY(100px); /* Move from bottom */
+  /* entry (up to center) | fall (down under image) | silver flash */
+  animation: 
+    letterEntry 0.8s forwards,
+    letterFall 1.5s forwards 6.5s, 
+    silverFlash 4s infinite 8.5s;
 }
 
-@keyframes letterIn {
+/* Staggered Letter Delays */
+.center-text span:nth-child(1) { animation-delay: 4.0s, 6.5s, 8.5s; }
+.center-text span:nth-child(2) { animation-delay: 4.1s, 6.5s, 8.5s; }
+.center-text span:nth-child(3) { animation-delay: 4.2s, 6.5s, 8.5s; }
+.center-text span:nth-child(4) { animation-delay: 4.3s, 6.5s, 8.5s; }
+.center-text span:nth-child(5) { animation-delay: 4.4s, 6.5s, 8.5s; }
+.center-text span:nth-child(6) { animation-delay: 4.5s, 6.5s, 8.5s; }
+.center-text span:nth-child(7) { animation-delay: 4.6s, 6.5s, 8.5s; }
+.center-text span:nth-child(8) { animation-delay: 4.7s, 6.5s, 8.5s; }
+.center-text span:nth-child(9) { animation-delay: 4.8s, 6.5s, 8.5s; }
+.center-text span:nth-child(10) { animation-delay: 4.0s, 6.5s, 8.5s; }
+.center-text span:nth-child(11) { animation-delay: 4.1s, 6.5s, 8.5s; }
+.center-text span:nth-child(12) { animation-delay: 4.1s, 6.5s, 8.5s; }
+.center-text span:nth-child(13) { animation-delay: 4.2s, 6.5s, 8.5s; }
+.center-text span:nth-child(14) { animation-delay: 4.3s, 6.5s, 8.5s; }
+.center-text span:nth-child(15) { animation-delay: 4.4s, 6.5s, 8.5s; }
+.center-text span:nth-child(16) { animation-delay: 4.5s, 6.5s, 8.5s; }
+.center-text span:nth-child(17) { animation-delay: 4.6s, 6.5s, 8.5s; }
+.center-text span:nth-child(18) { animation-delay: 4.7s, 6.5s, 8.5s; }
+.center-text span:nth-child(19) { animation-delay: 4.8s, 6.5s, 8.5s; }
+.center-text span:nth-child(20) { animation-delay: 4.1s, 6.5s, 8.5s; }
+
+/* Keyframes */
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes letterEntry {
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0); /* Centers on image */
   }
-}
-
-/* optional spacing element */
-.space {
-  width: 1rem;
-  display: inline-block;
-}
-
-/* =========================
-   FALL ANIMATION
-========================= */
-
-.inner {
-  display: inline-block;
-  transform: translateY(0);
-
-  animation:
-    letterFall 1.5s ease forwards var(--t-fall-delay),
-    silverFlash 4s infinite calc(var(--t-fall-delay) + 2s);
 }
 
 @keyframes letterFall {
   to {
-    transform: translateY(260px);
-    color: #C0C0C0;
+    /* Moves letters physically below the logo area */
+    transform: translateY(300px); 
+    color: #C0C0C0; /* Silver color */
   }
 }
 
-/* =========================
-   FLASH EFFECT
-========================= */
+@keyframes bgToGreen {
+  to { background-color: var(--bg-green); }
+}
 
 @keyframes silverFlash {
   0%, 85%, 100% {
@@ -170,28 +143,10 @@ body {
   }
 }
 
-/* =========================
-   BACKGROUND
-========================= */
-
-@keyframes bgToGreen {
-  to {
-    background-color: var(--bg-green);
-  }
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .center-text {
-    font-size: 3rem;
-  }
-
+  .center-text { font-size: 3rem; }
   @keyframes letterFall {
-    to {
-      transform: translateY(200px);
-    }
+    to { transform: translateY(200px); }
   }
 }
