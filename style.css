@@ -13,8 +13,185 @@ body {
   justify-content: center;
   align-items: center;
   background: black;
-  overflow: hidden;
   font-family: Arial, sans-serif;
+  overflow: hidden;
 
   animation: bgToGreen 1s forwards 8s;
+}
+
+/* =========================
+   WHITE FLASH
+========================= */
+
+.white-point {
+  position: fixed;
+  inset: 50%;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: flashExpand var(--t-flash) ease-out forwards;
+  z-index: 10;
+}
+
+@keyframes flashExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(80);
+    opacity: 0;
+  }
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.image-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+  width: 100%;
+  max-width: 1080px;
+  height: auto;
+  display: block;
+
+  opacity: 0;
+  transform: scale(1.02);
+
+  animation: logoIn 1.8s ease forwards var(--t-logo-delay);
+}
+
+@keyframes logoIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================
+   TEXT
+========================= */
+
+.center-text {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  text-align: center;
+  padding: 2rem;
+
+  font-size: clamp(2rem, 6vw, 5rem);
+  color: white;
+}
+
+/* LETTERS */
+
+.letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+
+  animation: letterIn 0.8s ease forwards;
+}
+
+@keyframes letterIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* optional spacing element */
+.space {
+  width: 1rem;
+  display: inline-block;
+}
+
+/* =========================
+   FALL ANIMATION
+========================= */
+
+.inner {
+  display: inline-block;
+  transform: translateY(0);
+
+  animation:
+    letterFall 1.5s ease forwards var(--t-fall-delay),
+    silverFlash 4s infinite calc(var(--t-fall-delay) + 2s);
+}
+
+@keyframes letterFall {
+  to {
+    transform: translateY(260px);
+    color: #C0C0C0;
+  }
+}
+
+/* =========================
+   FLASH EFFECT
+========================= */
+
+@keyframes silverFlash {
+  0%, 85%, 100% {
+    text-shadow: none;
+    filter: brightness(1);
+  }
+  92% {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+    filter: brightness(2);
+  }
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+@keyframes bgToGreen {
+  to {
+    background-color: var(--bg-green);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .center-text {
+    font-size: 3rem;
+  }
+
+  @keyframes letterFall {
+    to {
+      transform: translateY(200px);
+    }
+  }
 }
