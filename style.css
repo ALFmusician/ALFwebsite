@@ -106,6 +106,8 @@ body {
 .center-text span:nth-child(18) { animation-delay: 4.7s, 6.5s, 8.5s; }
 .center-text span:nth-child(19) { animation-delay: 4.8s, 6.5s, 8.5s; }
 .center-text span:nth-child(20) { animation-delay: 4.1s, 6.5s, 8.5s; }
+.center-text span:nth-child(21) { animation-delay: 4.1s, 6.5s, 8.5s; }
+.center-text span:nth-child(22) { animation-delay: 4.1s, 6.5s, 8.5s; }
 
 /* Keyframes */
 
