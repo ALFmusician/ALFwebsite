@@ -78,6 +78,11 @@ body {
   position: relative;
 
   width: 100%;
+<<<<<<< HEAD
+=======
+  max-width: 1200px;
+
+>>>>>>> parent of 624f5ed (Update style.css)
   height: 100vh;
 
   display: flex;
@@ -268,6 +273,7 @@ body {
   /* Nach unten */
   100% {
     opacity: 1;
+
     transform:
       translateY(110vh);
   }
