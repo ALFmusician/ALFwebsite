@@ -16,7 +16,11 @@
 
 * {
   margin: 0;
+<<<<<<< HEAD
   padding: 0;  
+=======
+  padding: 0;
+>>>>>>> parent of 4fc71d6 (Update style.css)
   box-sizing: border-box;
 }
 
@@ -162,7 +166,7 @@ body {
   position: relative;
 
   z-index: 2;
-  
+  padding-left: 30px;
 }
 
 @keyframes imageFadeIn {
