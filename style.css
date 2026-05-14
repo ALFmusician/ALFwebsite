@@ -61,7 +61,7 @@ body {
 .image-wrapper {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -119,7 +119,7 @@ body {
 
 .logo {
   width: 100%;
-  height: calc(100vh+50px);
+  height: 100dvh;
   object-fit: cover;
   display: block;
   opacity: 0;
@@ -230,6 +230,7 @@ body {
 @keyframes silverFlash {
 
   0% {
+    left: -160%;
     text-shadow:
       0 0 8px rgba(255,255,255,0.35);
   }
@@ -243,6 +244,7 @@ body {
   }
 
   100% {
+    left: 220%;
     text-shadow:
       0 0 8px rgba(255,255,255,0.35);
   }
