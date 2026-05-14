@@ -1,7 +1,7 @@
 :root {
   --green: #008000;
-  --circle-duration: 3,5s;
-  --image-delay: 2s;
+  --circle-duration: 3.5s;
+  --image-delay: 1.4s;
   --image-duration: 3s;
   --text-start: 6.5s;
   --letter-speed: 2s;
@@ -33,7 +33,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  animation: bodyToGreen 1s forwards 3s;
+  animation: bodyToGreen 1.5s forwards 3s;
 }
 
 /* =========================================
@@ -71,7 +71,6 @@ body {
 ========================================= */
 
 .main-wrapper {
-  background: var(--green);
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -79,8 +78,8 @@ body {
   align-items: flex-start;
   padding:
     0px
-    calc(70px + 20px)
-    80px;
+    calc(40px + 15px)
+    60px;
 }
 
 .content {
@@ -96,6 +95,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 /* =========================================
@@ -109,7 +109,16 @@ body {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: white;
+  background:
+  radial-gradient(
+    circle,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,0.9) 15%,
+    rgba(255,255,255,0.6) 35%,
+    rgba(255,255,255,0.25) 60%,
+    rgba(255,255,255,0) 100%
+  );
+  filter: blur(6px);
   transform:
     translate(-50%, -50%)
     scale(0);
@@ -121,14 +130,14 @@ body {
     0 0 420px rgba(255,255,255,0.35);
   animation:
     growCircle 2s forwards,
-    fadeCircle 1s forwards 2s;
+    fadeCircle 2.2s forwards 1.8s;
 }
 
 @keyframes growCircle {
   to {
     transform:
       translate(-50%, -50%)
-      scale(350);
+      scale(220);
   }
 }
 
@@ -180,13 +189,14 @@ body {
     translate(-50%, -50%);
   z-index: 3;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   justify-content: center;
   width: 90%;
   color: white;
   text-align: center;
   font-size:
-    clamp(2rem, 6vw, 5rem);
+    clamp(1rem, 4vw, 4rem);
   line-height: 1.2;
   pointer-events: none;
 }
@@ -202,7 +212,6 @@ body {
 }
 
 .center-text span:not(.space) {
-
   display: inline-block;
   opacity: 0;
   transform: translateY(220px);
@@ -215,40 +224,27 @@ body {
       (var(--i) * var(--letter-stagger))
     ),
     12s;
+  color: rgba(255,255,255,0.9);
+background:
+  linear-gradient(
+    90deg,
+    rgba(255,255,255,0.25) 0%,
+    rgba(255,255,255,0.25) 35%,
+    rgba(255,255,255,1) 50%,
+    rgba(255,255,255,0.25) 65%,
+    rgba(255,255,255,0.25) 100%
+  );
+background-size: 300% 100%;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
 }
 
 @keyframes flashEffect {
-
-  5% {
-    text-shadow:
-      0 0 1px rgba(255,255,255,0.15);
-    color: #ffffff;
+  0% {
+    background-position: -300% center;
   }
-
-  9% {
-    text-shadow:
-      0 0 6px rgba(255,255,255,0.95),
-      0 0 18px rgba(255,255,255,0.95),
-      0 0 35px rgba(255,255,255,0.9);
-    color: #ffffff;
-  }
-
-  11% {
-    text-shadow:
-      0 0 2px rgba(255,255,255,0.2);
-    color: #f0f0f0;
-  }
-
-  23% {
-    text-shadow:
-      0 0 1px rgba(255,255,255,0.15);
-    color: #ffffff;
-  }
-
-  71% {
-    text-shadow:
-      0 0 1px rgba(255,255,255,0.15);
-    color: #ffffff;
+  100% {
+    background-position: 300% center;
   }
 }
 
@@ -313,7 +309,6 @@ body {
 ========================================= */
 
 @keyframes bodyToGreen {
-
   to {
     background: var(--green);
   }
@@ -330,7 +325,7 @@ body {
 
   .main-wrapper {
     padding:
-      20px
+      0px
       calc(40px + 15px)
       60px;
   }
