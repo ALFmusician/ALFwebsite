@@ -4,10 +4,10 @@
   --image-delay: 3s;
   --image-duration: 3s;
   --text-start: 6.5s;
-  --letter-speed: 1.4s;
+  --letter-speed: 2s;
   --letter-stagger: 0.12s;
-  --fall-delay: 11s;
-  --fall-duration: 2.2s;
+  --fall-delay: 20s;
+  --fall-duration: 5s;
 }
 
 /* =========================================
@@ -170,6 +170,9 @@ body {
 ========================================= */
 
 .center-text {
+  opacity: 0;
+  animation:
+    showTextContainer 0s forwards 6.5s;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -186,6 +189,12 @@ body {
     clamp(2rem, 6vw, 5rem);
   line-height: 1.2;
   pointer-events: none;
+}
+
+@keyframes showTextContainer {
+  to {
+    opacity: 1;
+  }
 }
 
 .center-text .space {
