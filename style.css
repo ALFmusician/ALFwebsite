@@ -11,7 +11,7 @@
 ========================================= */
 
 * {
-  margin: 0; 
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
@@ -24,7 +24,8 @@ body {
   background: var(--green);
   min-height: 100vh;
   overflow: hidden;
-  font-family: Arial, sans-serif;  
+  font-family: Arial, sans-serif;
+  position: relative;
 }
 
 /* =========================================
@@ -39,7 +40,6 @@ body {
   align-items: flex-start;
   overflow: hidden;
   position: relative;
-
 }
 
 /* =========================================
@@ -64,7 +64,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  overflow: visible;  
+  overflow: hidden;
 }
 
 /* =========================================
@@ -73,26 +73,23 @@ body {
 
 .white-point {
   position: fixed;
-  background: black;
   top: 50%;
   left: 50%;
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,1) 0%,
-      rgba(255,255,255,0.55) 25%,
-      rgba(255,255,255,0.18) 55%,
-      rgba(255,255,255,0) 75%
-    );
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,0.55) 25%,
+    rgba(255,255,255,0.18) 55%,
+    rgba(255,255,255,0) 75%
+  );
   filter: blur(10px);
-  transform:
-    translate(-50%, -50%)
-    scale(0);
+  transform: translate(-50%, -50%) scale(0);
   pointer-events: none;
   z-index: 1;
+
   animation:
     glowGrow 2.5s ease-out forwards,
     glowFade 2s ease forwards 1.8s;
@@ -100,9 +97,7 @@ body {
 
 @keyframes glowGrow {
   to {
-    transform:
-      translate(-50%, -50%)
-      scale(240);
+    transform: translate(-50%, -50%) scale(240);
   }
 }
 
@@ -122,13 +117,10 @@ body {
   object-fit: cover;
   display: block;
   opacity: 0;
-  animation:
-    imageFadeIn
-    var(--image-duration)
-    ease
-    forwards;
   position: relative;
   z-index: 2;
+
+  animation: imageFadeIn var(--image-duration) ease forwards;
 }
 
 @keyframes imageFadeIn {
@@ -144,13 +136,16 @@ body {
 .center-text {
   position: absolute;
   left: 50%;
-  bottom: 0;
+  bottom: var(--bottom-gap);
   transform: translateX(-50%);
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   white-space: nowrap;
   text-align: center;
+
   pointer-events: none;
   z-index: 9999;
 }
@@ -162,22 +157,22 @@ body {
 .center-text span {
   display: inline-block;
   position: relative;
-  z-index: 10000;
   color: white;
   opacity: 0;
-  font-size:   
-    clamp(1rem, 5vw + 1vh, 5rem);
+
+  font-size: clamp(1rem, 5vw + 1vh, 5rem);
   line-height: 1.1;
+
   transform: translateY(140vh);
-  text-shadow:
-    0 0 8px rgba(255,255,255,0.35);
-  will-change:
-    transform,
-    opacity,
-    text-shadow;
+
+  text-shadow: 0 0 8px rgba(255,255,255,0.35);
+
+  will-change: transform, opacity, text-shadow;
+
   animation:
     letterMove var(--text-duration) ease forwards,
-    silverFlash 2.2s ease-in-out infinite both;
+    silverFlash 2.2s ease-in-out infinite;
+
   animation-delay:
     calc(var(--i) * var(--letter-stagger)),
     13s;
@@ -188,36 +183,29 @@ body {
 ========================================= */
 
 @keyframes letterMove {
-
-  /* Start unten */
   0% {
     opacity: 0;
     transform: translateY(120vh);
   }
 
-  /* Ganz oben */
   20% {
     opacity: 1;
     transform: translateY(-40vh);
   }
 
-  /* Zur Mitte */
   35% {
     opacity: 1;
     transform: translateY(0);
   }
 
-  /* In Mitte bleiben */
   70% {
     opacity: 1;
     transform: translateY(0);
   }
 
-  /* Nach unten */
   100% {
     opacity: 1;
-    transform:
-      translateY(35em);
+    transform: translateY(35em);
   }
 }
 
@@ -226,10 +214,8 @@ body {
 ========================================= */
 
 @keyframes silverFlash {
-
   0% {
-    text-shadow:
-      0 0 8px rgba(255,255,255,0.35);
+    text-shadow: 0 0 8px rgba(255,255,255,0.35);
   }
 
   50% {
@@ -241,8 +227,7 @@ body {
   }
 
   100% {
-    text-shadow:
-      0 0 8px rgba(255,255,255,0.35);
+    text-shadow: 0 0 8px rgba(255,255,255,0.35);
   }
 }
 
@@ -251,36 +236,25 @@ body {
 ========================================= */
 
 @media (max-height: 850px) {
-
   .image-wrapper {
     height: auto;
-    padding-bottom: 0px;
   }
 
   .logo {
     height: auto;
-
-    max-height:
-      calc(
-        100vh - 10px
-      );
-
+    max-height: calc(100vh - 10px);
     object-fit: contain;
   }
 }
 
 @media (max-width: 900px) {
-
   .center-text span {
-    font-size:
-      clamp(1rem, 7vw, 3rem);
+    font-size: clamp(1rem, 7vw, 3rem);
   }
 }
 
 @media (max-width: 600px) {
-
   .center-text span {
-    font-size:
-      clamp(0.9rem, 8vw, 2rem);
+    font-size: clamp(0.9rem, 8vw, 2rem);
   }
 }
