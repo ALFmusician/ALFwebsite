@@ -15,12 +15,8 @@
 ========================================= */
 
 * {
-  margin: 0;
-<<<<<<< HEAD
-  padding: 0;  
-=======
+  margin: 0; 
   padding: 0;
->>>>>>> parent of 4fc71d6 (Update style.css)
   box-sizing: border-box;
 }
 
@@ -63,7 +59,7 @@ body {
 
 .content {
   width: 100%;
-  height: 100%;
+  height: 100vh;
 
   display: flex;
   justify-content: center;
@@ -78,11 +74,6 @@ body {
   position: relative;
 
   width: 100%;
-<<<<<<< HEAD
-=======
-  max-width: 1200px;
-
->>>>>>> parent of 624f5ed (Update style.css)
   height: 100vh;
 
   display: flex;
@@ -99,7 +90,7 @@ body {
 
 .white-point {
   position: fixed;
-
+  background: black;
   top: 50%;
   left: 50%;
 
@@ -154,7 +145,7 @@ body {
 
 .logo {
   width: 100%;
-  height: 100%;
+  height: 100vh;
 
   object-fit: cover;
 
@@ -171,11 +162,9 @@ body {
   position: relative;
 
   z-index: 2;
-
 }
 
 @keyframes imageFadeIn {
-
   to {
     opacity: 1;
   }
@@ -217,7 +206,7 @@ body {
   opacity: 0;
 
   font-size:
-    clamp(1.2rem, 5vw, 5rem);
+    clamp(1.2rem, 6vw, 5rem);
 
   line-height: 1.1;
 
