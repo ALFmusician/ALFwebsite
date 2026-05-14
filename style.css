@@ -1,17 +1,13 @@
 :root {
   --green: #008000;
-
-  --circle-duration: 2.5s;
-
-  --image-delay: 1.2s;
-  --image-duration: 2.4s;
-
-  --text-start: 4.5s;
-
-  --letter-stagger: 0.08s;
-
-  --fall-start: 20s;
-  --fall-duration: 5s;
+  --circle-duration: 3.5s;
+  --image-delay: 1.4s;
+  --image-duration: 3s;
+  --text-start: 6s;
+  --letter-speed: 3s;
+  --letter-stagger: 0.2s;
+  --fall-delay: 20s;
+  --fall-duration: 15s;
 }
 
 /* =========================================
@@ -30,63 +26,37 @@
 
 body {
   background: black;
-
   min-height: 100vh;
-
-  overflow: hidden;
-
+  overflow-x: hidden;
+  overflow-y: auto;
   font-family: Arial, sans-serif;
-
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  animation: bodyToGreen 0s forwards 0.5s;
 }
 
 /* =========================================
-   GRÜNER HINTERGRUND
-========================================= */
-
-body::after {
-  content: "";
-
-  position: fixed;
-
-  inset: 0;
-
-  background: var(--green);
-
-  z-index: -3;
-
-  opacity: 0;
-
-  animation:
-    showGreenBackground 0.2s forwards 0.4s;
-}
-
-@keyframes showGreenBackground {
-  to {
-    opacity: 1;
-  }
-}
-
-/* =========================================
-   SEITENRÄNDER
+   FIXE SEITENRÄNDER
 ========================================= */
 
 .sidebar {
   position: fixed;
-
   top: 0;
-
   width: 70px;
   height: 100vh;
-
   background: var(--green);
-
-  z-index: 10;
-
+  z-index: 20;
   opacity: 0;
-
   animation:
-    showSidebars 0.4s forwards 7s;
+    showSidebars 0.5s forwards 12.5s;
+}
+
+@keyframes showSidebars {
+  to {
+    opacity: 1;
+  }
 }
 
 .sidebar.left {
@@ -97,98 +67,74 @@ body::after {
   right: 0;
 }
 
-@keyframes showSidebars {
-  to {
-    opacity: 1;
-  }
-}
-
 /* =========================================
-   LAYOUT
+   MAIN LAYOUT
 ========================================= */
 
 .main-wrapper {
   width: 100%;
   min-height: 100vh;
-
   display: flex;
   justify-content: center;
-  align-items: center;
-
+  align-items: flex-start;
   padding:
-    20px
-    85px
-    90px;
+    0px
+    calc(40px + 15px)
+    60px;
 }
 
 .content {
   width: 100%;
-
   display: flex;
   justify-content: center;
 }
 
 .image-wrapper {
   position: relative;
-
+  z-index:2;
   width: 100%;
   max-width: 1200px;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  overflow: visible;
-
-  z-index: 2;
+  overflow: hidden;
 }
 
 /* =========================================
-   WEISSER GLOW-KREIS
+   WEISSER WACHSENDER KREIS
 ========================================= */
 
 .white-point {
   position: fixed;
-
-  top: 50%;
-  left: 50%;
-
-  width: 12px;
-  height: 12px;
-
+  inset: 0;
+  margin: auto;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-
-  transform:
-    translate(-50%, -50%)
-    scale(0);
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,1) 0%,
-      rgba(255,255,255,0.65) 22%,
-      rgba(255,255,255,0.2) 55%,
-      rgba(255,255,255,0) 75%
-    );
-
-  filter: blur(10px);
-
-  mix-blend-mode: screen;
-
-  pointer-events: none;
-
   z-index: 1;
 
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,0.55) 25%,
+    rgba(255,255,255,0.18) 55%,
+    rgba(255,255,255,0) 75%
+  );
+
+  filter: blur(12px);
+  transform: scale(0);
+
   animation:
-    growCircle var(--circle-duration) ease-out forwards,
-    fadeCircle 2s ease forwards 1.8s;
+    growCircle 2.4s ease-out forwards,
+    fadeCircle 2.2s ease-in forwards 1.6s;
+
+  mix-blend-mode: screen;
+  pointer-events: none;
 }
 
 @keyframes growCircle {
   to {
-    transform:
-      translate(-50%, -50%)
-      scale(240);
+    transform: scale(260);
   }
 }
 
@@ -204,25 +150,17 @@ body::after {
 
 .logo {
   width: 100%;
-
   max-width: 1100px;
-
-  max-height: 78vh;
-
+  max-height: 80vh;
   object-fit: contain;
-
+  height: auto;
   display: block;
-
-  position: relative;
-
-  z-index: 2;
-
   opacity: 0;
-
+  position: relative;
+  z-index: 2;
   animation:
     imageFadeIn
     var(--image-duration)
-    ease
     forwards
     var(--image-delay);
 }
@@ -234,130 +172,139 @@ body::after {
 }
 
 /* =========================================
-   TEXT-CONTAINER
+   TEXT
 ========================================= */
 
 .center-text {
-  position: absolute;
-
-  inset: 0;
-
+  opacity: 0;
+  animation:
+    showTextContainer 0s forwards 6.5s;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90vw, 1200px);
+  z-index: 999;
   display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   justify-content: center;
   align-items: center;
-
-  flex-wrap: nowrap;
-
-  white-space: nowrap;
-
-  pointer-events: none;
-
-  z-index: 50;
-
+  width: 90%;
+  color: white;
+  text-align: center;
   font-size:
-    clamp(1.2rem, 5vw, 5rem);
+    clamp(1rem, 6vw, 5rem);
+  line-height: 1.2;
+  pointer-events: none;
+}
 
-  line-height: 1.1;
+@keyframes showTextContainer {
+  to {
+    opacity: 1;
+  }
 }
 
 .center-text .space {
-  width: 0.45em;
+  width: 0.5em;
 }
-
-/* =========================================
-   BUCHSTABEN
-========================================= */
 
 .center-text span:not(.space) {
   display: inline-block;
-
-  position: relative;
-
-  color: white;
-
   opacity: 0;
-
   transform: translateY(120vh);
-
-  text-shadow:
-    0 0 4px rgba(255,255,255,0.9),
-    0 0 14px rgba(255,255,255,0.55);
-
-  z-index: 100;
-
-  will-change:
-    transform,
-    opacity;
-
+  color: white;
   animation:
-    letterEntrance 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    letterFall var(--fall-duration) ease-in forwards,
-    flashEffect 2.2s ease-in-out infinite;
-
+    letterSequence01 5s forwards,
+    letterSequence02 5s forwards,
+    flashEffect 2.2s infinite;
   animation-delay:
     calc(var(--text-start) + (var(--i) * var(--letter-stagger))),
-    calc(var(--fall-start) + (var(--i) * 0.05s)),
-    8s;
+    15s,
+    30s;
+background:
+  linear-gradient(
+    90deg,
+    rgba(255,255,255,0.25) 0%,
+    rgba(255,255,255,0.25) 35%,
+    rgba(255,255,255,1) 50%,
+    rgba(255,255,255,0.25) 65%,
+    rgba(255,255,255,0.25) 100%
+  );
+background-size: 300% 100%;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
 }
-
-/* =========================================
-   EINFLUG ZUR MITTE
-========================================= */
-
-@keyframes letterEntrance {
-
-  0% {
-    opacity: 0;
-    transform: translateY(120vh);
-  }
-
-  60% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* =========================================
-   NACH UNTEN FALLEN
-========================================= */
-
-@keyframes letterFall {
-
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(42vh);
-  }
-}
-
-/* =========================================
-   FLASH-EFFEKT
-========================================= */
 
 @keyframes flashEffect {
-
   0% {
-    filter: brightness(1);
+    background-position: -300% center;
   }
-
-  50% {
-    filter: brightness(1.9);
-
-    text-shadow:
-      0 0 10px rgba(255,255,255,1),
-      0 0 26px rgba(255,255,255,0.75);
-  }
-
   100% {
-    filter: brightness(1.1);
+    background-position: 300% center;
+  }
+}
+
+/* =========================================
+   KOMBINIERTE TEXTANIMATION
+========================================= */
+
+@keyframes letterSequence01 {
+  /* Start unter Bild */
+  0% {
+    opacity: 0;
+    transform: translateY(500px);
+  }
+  /* Sichtbar werden */
+  50% {
+    opacity: 1;
+  }
+  /* Hoch bis über Bild */
+  80% {
+    opacity: 1;
+    transform: translateY(-260px);
+  }
+  /* Zurück zur Mitte */
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes letterSequence02 {
+   /* Kurz stehen */
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Nach unten fallen */
+  50% {
+    opacity: 1;
+    transform: translateY(320px);
+    color: white;
+    text-shadow:
+      0 0 4px rgba(255,255,255,0.9),
+      0 0 10px rgba(255,255,255,0.7);
+    filter: brightness(1.4);
+  }
+  /* Endzustand */
+  100% {
+    opacity: 1;
+    transform: translateY(320px);
+    color: white;
+    text-shadow:
+    0 0 1px rgba(255,255,255,0.25);
+  }
+}
+
+/* =========================================
+   HINTERGRUND WIRD GRÜN
+========================================= */
+
+@keyframes bodyToGreen {
+  to {
+    background: var(--green);
   }
 }
 
@@ -366,16 +313,15 @@ body::after {
 ========================================= */
 
 @media (max-width: 900px) {
-
   .sidebar {
     width: 40px;
   }
 
   .main-wrapper {
     padding:
-      20px
-      55px
-      80px;
+      0px
+      calc(40px + 15px)
+      60px;
   }
 
   .logo {
@@ -384,25 +330,17 @@ body::after {
 
   .center-text {
     font-size:
-      clamp(1.1rem, 7vw, 3rem);
+      clamp(1.6rem, 7vw, 3rem);
   }
 }
 
 @media (max-width: 600px) {
-
-  .main-wrapper {
-    padding:
-      10px
-      20px
-      70px;
+  .center-text {
+    font-size:
+      clamp(1.2rem, 8vw, 2.2rem);
   }
 
   .logo {
-    max-height: 62vh;
-  }
-
-  .center-text {
-    font-size:
-      clamp(0.9rem, 8vw, 2rem);
+    max-height: 60vh;
   }
 }
