@@ -24,11 +24,9 @@ body {
 .stage {
   width: 100%;
   min-height: 100vh;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding:
     20px
     60px
@@ -39,10 +37,8 @@ body {
 
 .image-frame {
   position: relative;
-
   width: 100%;
   max-width: 1200px;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,9 +50,7 @@ body {
   width: 100%;
   height: auto;
   display: block;
-
   opacity: 0;
-
   animation:
     showImage 2s ease forwards;
 }
@@ -71,19 +65,13 @@ body {
 
 .text {
   position: absolute;
-
   inset: 0;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   pointer-events: none;
-
   white-space: nowrap;
-
-  font-size: clamp(1.2rem, 5vw, 5rem);
-
+  font-size: clamp(1.2rem, 6vw, 5rem);
   z-index: 2;
 }
 
@@ -97,47 +85,37 @@ body {
 
 .text span:not(.space) {
   display: inline-block;
-
   color: white;
-
   opacity: 0;
-
   transform: translateY(120vh);
-
   text-shadow:
     0 0 8px rgba(255,255,255,0.8);
-
   animation:
     moveLetter 28s ease forwards,
     flash 2s infinite;
-
   animation-delay:
     calc(var(--i) * 0.08s),
     3s;
 }
 
 /* HAUPTANIMATION */
-
 @keyframes moveLetter {
-
+  
   /* Start unter Bild */
   0% {
     opacity: 0;
     transform: translateY(120vh);
   }
-
   /* Hoch zur Mitte */
   10% {
     opacity: 1;
     transform: translateY(0);
   }
-
   /* In der Mitte bleiben */
   70% {
     opacity: 1;
     transform: translateY(0);
   }
-
   /* Nach unten fallen */
   100% {
     opacity: 1;
@@ -146,17 +124,13 @@ body {
 }
 
 /* LEICHTES FLASHEN */
-
 @keyframes flash {
-
   0% {
     opacity: 0.85;
   }
-
   50% {
     opacity: 1;
   }
-
   100% {
     opacity: 0.85;
   }
@@ -165,7 +139,6 @@ body {
 /* RESPONSIVE */
 
 @media (max-width: 900px) {
-
   .stage {
     padding:
       20px
@@ -179,7 +152,6 @@ body {
 }
 
 @media (max-width: 600px) {
-
   .text {
     font-size: clamp(0.9rem, 8vw, 2rem);
   }
