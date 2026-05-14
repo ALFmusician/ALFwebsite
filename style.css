@@ -49,7 +49,7 @@ body {
   z-index: 20;
   opacity: 0;
   animation:
-    showSidebars 1s forwards 12.5s;
+    showSidebars 0s forwards 12.5s;
 }
 
 @keyframes showSidebars {
