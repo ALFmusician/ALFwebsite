@@ -197,14 +197,49 @@ body {
   opacity: 0;
   transform: translateY(220px);
   animation:
-    letterSequence
-    5s
-    forwards;
+    letterSequence 5s forwards,
+    flashEffect 2.2s infinite;
   animation-delay:
     calc(
       var(--text-start) +
       (var(--i) * var(--letter-stagger))
-    );
+    ),
+    12s;
+}
+
+@keyframes flashEffect {
+
+  5% {
+    text-shadow:
+      0 0 1px rgba(255,255,255,0.15);
+    color: #ffffff;
+  }
+
+  9% {
+    text-shadow:
+      0 0 6px rgba(255,255,255,0.95),
+      0 0 18px rgba(255,255,255,0.95),
+      0 0 35px rgba(255,255,255,0.9);
+    color: #ffffff;
+  }
+
+  11% {
+    text-shadow:
+      0 0 2px rgba(255,255,255,0.2);
+    color: #f0f0f0;
+  }
+
+  23% {
+    text-shadow:
+      0 0 1px rgba(255,255,255,0.15);
+    color: #ffffff;
+  }
+
+  71% {
+    text-shadow:
+      0 0 1px rgba(255,255,255,0.15);
+    color: #ffffff;
+  }
 }
 
 /* =========================================
@@ -257,10 +292,9 @@ body {
   100% {
     opacity: 1;
     transform: translateY(320px);
-    color: #f5f5f5;
+    color: white;
     text-shadow:
-      0 0 2px rgba(255,255,255,0.35);
-    filter: brightness(1);
+    0 0 1px rgba(255,255,255,0.25);
   }
 }
 
