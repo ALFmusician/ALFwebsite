@@ -222,7 +222,11 @@ body {
   /* Sichtbar – gerade eingeflogen */
   8% {
     opacity: 1;
+<<<<<<< HEAD
     transform: translateY(55vh);
+=======
+    transform: translateY(-40em);
+>>>>>>> parent of 0929ecf (Update style.css)
   }
 
   /* Fährt nach oben bis zum oberen Rand */
