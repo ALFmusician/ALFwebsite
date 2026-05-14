@@ -1,13 +1,15 @@
 :root {
   --green: #008000;
-  --circle-duration: 3.5s;
-  --image-delay: 1.4s;
-  --image-duration: 3s;
-  --text-start: 6s;
-  --letter-speed: 3s;
-  --letter-stagger: 0.2s;
-  --fall-delay: 20s;
-  --fall-duration: 15s;
+
+  --image-delay: 1s;
+  --image-duration: 2.5s;
+
+  --text-start: 4s;
+  --letter-stagger: 0.08s;
+
+  --hold-time: 10s;
+
+  --fall-duration: 3.5s;
 }
 
 /* =========================================
@@ -25,38 +27,30 @@
 ========================================= */
 
 body {
-  background: black;
+  background: var(--green);
+
   min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
+
+  overflow: hidden;
+
   font-family: Arial, sans-serif;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  animation: bodyToGreen 0s forwards 0.5s;
 }
 
 /* =========================================
-   FIXE SEITENRÄNDER
+   SEITENRÄNDER
 ========================================= */
 
 .sidebar {
   position: fixed;
+
   top: 0;
+
   width: 70px;
   height: 100vh;
-  background: var(--green);
-  z-index: 20;
-  opacity: 0;
-  animation:
-    showSidebars 0.5s forwards 12.5s;
-}
 
-@keyframes showSidebars {
-  to {
-    opacity: 1;
-  }
+  background: var(--green);
+
+  z-index: 20;
 }
 
 .sidebar.left {
@@ -74,71 +68,95 @@ body {
 .main-wrapper {
   width: 100%;
   min-height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding:
-    0px
-    calc(40px + 15px)
-    60px;
-}
 
-.content {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.image-wrapper {
-  position: relative;
-  z-index:2;
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  padding-left: 70px;
+  padding-right: 70px;
 }
 
 /* =========================================
-   WEISSER WACHSENDER KREIS
+   CONTENT
+========================================= */
+
+.content {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* =========================================
+   IMAGE WRAPPER
+========================================= */
+
+.image-wrapper {
+  position: relative;
+
+  width: 100%;
+  max-width: 1200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  overflow: visible;
+}
+
+/* =========================================
+   WEISSER GLOW
 ========================================= */
 
 .white-point {
   position: fixed;
-  inset: 0;
-  margin: auto;
-  width: 10px;
-  height: 10px;
+
+  top: 50%;
+  left: 50%;
+
+  width: 12px;
+  height: 12px;
+
   border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,0.55) 25%,
+      rgba(255,255,255,0.18) 55%,
+      rgba(255,255,255,0) 75%
+    );
+
+  filter: blur(10px);
+
+  transform:
+    translate(-50%, -50%)
+    scale(0);
+
+  pointer-events: none;
+
   z-index: 1;
 
-  background: radial-gradient(
-    circle,
-    rgba(255,255,255,1) 0%,
-    rgba(255,255,255,0.55) 25%,
-    rgba(255,255,255,0.18) 55%,
-    rgba(255,255,255,0) 75%
-  );
-
-  filter: blur(12px);
-  transform: scale(0);
-
   animation:
-    growCircle 2.4s ease-out forwards,
-    fadeCircle 2.2s ease-in forwards 1.6s;
-
-  mix-blend-mode: screen;
-  pointer-events: none;
+    glowGrow 2.5s ease-out forwards,
+    glowFade 2s ease forwards 1.8s;
 }
 
-@keyframes growCircle {
+@keyframes glowGrow {
+
   to {
-    transform: scale(260);
+    transform:
+      translate(-50%, -50%)
+      scale(240);
   }
 }
 
-@keyframes fadeCircle {
+@keyframes glowFade {
+
   to {
     opacity: 0;
   }
@@ -150,161 +168,154 @@ body {
 
 .logo {
   width: 100%;
+
   max-width: 1100px;
-  max-height: 80vh;
-  object-fit: contain;
+
   height: auto;
+
+  max-height: 100vh;
+
+  object-fit: contain;
+
   display: block;
+
   opacity: 0;
+
   position: relative;
+
   z-index: 2;
+
   animation:
     imageFadeIn
     var(--image-duration)
+    ease
     forwards
     var(--image-delay);
 }
 
 @keyframes imageFadeIn {
+
   to {
     opacity: 1;
   }
 }
 
 /* =========================================
-   TEXT
+   TEXT CONTAINER
 ========================================= */
 
 .center-text {
-  opacity: 0;
-  animation:
-    showTextContainer 0s forwards 6.5s;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(90vw, 1200px);
-  z-index: 999;
+  position: absolute;
+
+  inset: 0;
+
   display: flex;
-  flex-wrap: nowrap;
-  white-space: nowrap;
   justify-content: center;
   align-items: center;
-  width: 90%;
-  color: white;
-  text-align: center;
-  font-size:
-    clamp(1rem, 6vw, 5rem);
-  line-height: 1.2;
+
+  flex-wrap: nowrap;
+
+  white-space: nowrap;
+
   pointer-events: none;
+
+  z-index: 100;
+
+  font-size:
+    clamp(1.1rem, 5vw, 5rem);
+
+  line-height: 1.1;
 }
 
-@keyframes showTextContainer {
-  to {
-    opacity: 1;
-  }
-}
+/* =========================================
+   BUCHSTABEN
+========================================= */
 
-.center-text .space {
-  width: 0.5em;
-}
-
-.center-text span:not(.space) {
+.center-text span {
   display: inline-block;
-  opacity: 0;
-  transform: translateY(120vh);
+
   color: white;
+
+  opacity: 0;
+
+  transform: translateY(120vh);
+
+  position: relative;
+
+  z-index: 100;
+
+  text-shadow:
+    0 0 6px rgba(255,255,255,0.5);
+
   animation:
-    letterSequence01 5s forwards,
-    letterSequence02 5s forwards,
-    flashEffect 2.2s infinite;
+    textMove calc(3s + var(--hold-time) + var(--fall-duration)) linear forwards,
+    flashSilver 1.3s ease-in-out 1;
+
   animation-delay:
     calc(var(--text-start) + (var(--i) * var(--letter-stagger))),
-    15s,
-    30s;
-background:
-  linear-gradient(
-    90deg,
-    rgba(255,255,255,0.25) 0%,
-    rgba(255,255,255,0.25) 35%,
-    rgba(255,255,255,1) 50%,
-    rgba(255,255,255,0.25) 65%,
-    rgba(255,255,255,0.25) 100%
-  );
-background-size: 300% 100%;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
+    calc(var(--text-start) + 3s + 1s);
 
-@keyframes flashEffect {
-  0% {
-    background-position: -300% center;
-  }
-  100% {
-    background-position: 300% center;
-  }
+  will-change:
+    transform,
+    opacity;
 }
 
 /* =========================================
-   KOMBINIERTE TEXTANIMATION
+   TEXTABLAUF
 ========================================= */
 
-@keyframes letterSequence01 {
-  /* Start unter Bild */
+@keyframes textMove {
+
+  /* START */
   0% {
     opacity: 0;
-    transform: translateY(500px);
+    transform: translateY(120vh);
   }
-  /* Sichtbar werden */
-  50% {
-    opacity: 1;
-  }
-  /* Hoch bis über Bild */
-  80% {
-    opacity: 1;
-    transform: translateY(-260px);
-  }
-  /* Zurück zur Mitte */
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes letterSequence02 {
-   /* Kurz stehen */
-  0% {
+  /* ZUR MITTE */
+  15% {
     opacity: 1;
     transform: translateY(0);
   }
-  /* Nach unten fallen */
-  50% {
+
+  /* 10 SEK HALTEN */
+  75% {
     opacity: 1;
-    transform: translateY(320px);
-    color: white;
-    text-shadow:
-      0 0 4px rgba(255,255,255,0.9),
-      0 0 10px rgba(255,255,255,0.7);
-    filter: brightness(1.4);
+    transform: translateY(0);
   }
-  /* Endzustand */
+
+  /* NACH UNTEN FALLEN */
   100% {
     opacity: 1;
-    transform: translateY(320px);
-    color: white;
-    text-shadow:
-    0 0 1px rgba(255,255,255,0.25);
+    transform: translateY(42vh);
   }
 }
 
 /* =========================================
-   HINTERGRUND WIRD GRÜN
+   SILBER FLASH
 ========================================= */
 
-@keyframes bodyToGreen {
-  to {
-    background: var(--green);
+@keyframes flashSilver {
+
+  0% {
+    text-shadow:
+      0 0 0 rgba(255,255,255,0);
+  }
+
+  50% {
+    text-shadow:
+      0 0 10px rgba(255,255,255,1),
+      0 0 24px rgba(220,220,220,1),
+      0 0 50px rgba(180,180,180,0.9);
+
+    filter: brightness(2);
+  }
+
+  100% {
+    text-shadow:
+      0 0 6px rgba(255,255,255,0.4);
+
+    filter: brightness(1);
   }
 }
 
@@ -312,35 +323,48 @@ background-size: 300% 100%;
    RESPONSIVE
 ========================================= */
 
+@media (max-height: 900px) {
+
+  .main-wrapper {
+    padding-bottom: 80px;
+  }
+
+  .logo {
+    max-height: calc(100vh - 80px);
+  }
+}
+
 @media (max-width: 900px) {
+
   .sidebar {
     width: 40px;
   }
 
   .main-wrapper {
-    padding:
-      0px
-      calc(40px + 15px)
-      60px;
-  }
-
-  .logo {
-    max-height: 70vh;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   .center-text {
     font-size:
-      clamp(1.6rem, 7vw, 3rem);
+      clamp(1rem, 7vw, 3rem);
   }
 }
 
 @media (max-width: 600px) {
-  .center-text {
-    font-size:
-      clamp(1.2rem, 8vw, 2.2rem);
+
+  .main-wrapper {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 70px;
   }
 
   .logo {
-    max-height: 60vh;
+    max-height: calc(100vh - 70px);
+  }
+
+  .center-text {
+    font-size:
+      clamp(0.9rem, 8vw, 2rem);
   }
 }
