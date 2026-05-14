@@ -213,21 +213,59 @@ body {
 
   transform: translateY(140vh);
 
+  /* Feste grüne Ränder entfernt */
   text-shadow:
-    0 0 8px rgba(255,255,255,0.35);
+    0 0 8px rgba(255,255,255,0.25);
 
   will-change:
     transform,
-    opacity,
-    text-shadow;
+    opacity;
+
+  overflow: hidden;
 
   animation:
-    letterMove var(--text-duration) ease forwards,
-    silverFlash 2.2s ease-in-out infinite;
+    letterMove var(--text-duration) ease forwards;
+}
 
-  animation-delay:
-    calc(var(--i) * var(--letter-stagger)),
-    13s;
+/* =========================================
+   SILBERNER FLASH OVERLAY
+========================================= */
+
+.center-text span::after {
+  content: "";
+
+  position: absolute;
+
+  top: -20%;
+  left: -160%;
+
+  width: 70%;
+  height: 140%;
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.08) 35%,
+      rgba(255,255,255,0.95) 50%,
+      rgba(220,220,220,0.9) 52%,
+      rgba(255,255,255,0.08) 65%,
+      rgba(255,255,255,0) 100%
+    );
+
+  transform: skewX(-25deg);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  mix-blend-mode: screen;
+
+  animation:
+    silverSweep 2.8s linear infinite;
+
+  /* Start erst nach Abschluss der Textanimation */
+  animation-delay: 18s;
 }
 
 /* =========================================
@@ -274,27 +312,28 @@ body {
 }
 
 /* =========================================
-   SILBER FLASH
+   SILBER FLASH ANIMATION
 ========================================= */
 
-@keyframes silverFlash {
+@keyframes silverSweep {
 
   0% {
-    text-shadow:
-      0 0 8px rgba(255,255,255,0.35);
+    left: -160%;
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 1;
   }
 
   50% {
-    text-shadow:
-      0 0 12px rgba(255,255,255,1),
-      0 0 28px rgba(220,220,220,0.95),
-      0 0 60px rgba(180,180,180,0.85),
-      0 0 100px rgba(255,255,255,0.6);
+    left: 160%;
+    opacity: 1;
   }
 
   100% {
-    text-shadow:
-      0 0 8px rgba(255,255,255,0.35);
+    left: 160%;
+    opacity: 0;
   }
 }
 
