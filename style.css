@@ -1,11 +1,158 @@
-/* style.css */
+:root {
+  --green: #008000;
+  --image-duration: 2.5s;
+  --text-duration: 18s;
+  --letter-stagger: 0.08s;
+  --bottom-gap: 0px;
+}
 
-:root{
+/* =========================================
+   RESET
+========================================= */
+
+* {
+  margin: 0; 
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   BODY
+========================================= */
+
+body {
+  background: var(--green);
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: Arial, sans-serif;  
+}
+
+/* =========================================
+   MAIN WRAPPER
+========================================= */
+
+.main-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.content {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* =========================================
+   IMAGE WRAPPER
+========================================= */
+
+.image-wrapper {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: visible;  
+}
+
+/* =========================================
+   WEISSER GLOW
+========================================= */
+
+.white-point {
+  position: fixed;
+  background: black;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,0.55) 25%,
+      rgba(255,255,255,0.18) 55%,
+      rgba(255,255,255,0) 75%
+    );
+  filter: blur(10px);
+  transform:
+    translate(-50%, -50%)
+    scale(0);
+  pointer-events: none;
+  z-index: 1;
+  animation:
+    glowGrow 2.5s ease-out forwards,
+    glowFade 2s ease forwards 1.8s;
+}
+
+@keyframes glowGrow {
+  to {
+    transform:
+      translate(-50%, -50%)
+      scale(240);
+  }
+}
+
+@keyframes glowFade {
+  to {
+    opacity: 0;
+  }
+}
+
+/* =========================================
+   BILD
+========================================= */
+
+.logo {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  animation:
+    imageFadeIn
+    var(--image-duration)
+    ease
+    forwards;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes imageFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* =========================================
+   TEXT CONTAINER
+========================================= */
+
+.center-text {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   white-space: nowrap;
   text-align: center;
   pointer-events: none;
   z-index: 9999;
-  --text-duration: 6s;
 }
 
 /* =========================================
