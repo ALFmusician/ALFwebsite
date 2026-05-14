@@ -118,8 +118,8 @@ body {
 ========================================= */
 
 .logo {
-  width: 100%;
-  height: calc(100dvh + 2px);
+  min-width: 100%;
+  max-height: calc(100dvh + 2px);
   object-fit: cover;
   display: block;
   opacity: 0;
