@@ -238,13 +238,13 @@ body {
   /* Start unten */
   0% {
     opacity: 0;
-    transform: translateY(120%);
+    transform: translateY(120vh);
   }
 
   /* Ganz oben */
   20% {
     opacity: 1;
-    transform: translateY(-40%);
+    transform: translateY(-40vh);
   }
 
   /* Zur Mitte */
@@ -262,9 +262,8 @@ body {
   /* Nach unten */
   100% {
     opacity: 1;
-
     transform:
-      translateY(40%);
+      translateY(60vh);
   }
 }
 
