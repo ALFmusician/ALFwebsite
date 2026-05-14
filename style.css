@@ -1,178 +1,5 @@
-:root {
-  --green: #008000;
-
-  --image-duration: 2.5s;
-
-  --text-duration: 18s;
-
-  --letter-stagger: 0.08s;
-
-  --bottom-gap: 0px;
-}
-
-/* =========================================
-   RESET
-========================================= */
-
-* {
-  margin: 0; 
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* =========================================
-   BODY
-========================================= */
-
-body {
-  background: var(--green);
-
-  min-height: 100vh;
-
-  overflow: hidden;
-
-  font-family: Arial, sans-serif;
-  
-}
-
-/* =========================================
-   MAIN WRAPPER
-========================================= */
-
-.main-wrapper {
-  width: 100%;
-  height: 100vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-
-  overflow: hidden;
-
-  position: relative;
-
-}
-
-/* =========================================
-   CONTENT
-========================================= */
-
-.content {
-  width: 100%;
-  height: 100vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-/* =========================================
-   IMAGE WRAPPER
-========================================= */
-
-.image-wrapper {
-  position: relative;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  overflow: visible;  
-}
-
-/* =========================================
-   WEISSER GLOW
-========================================= */
-
-.white-point {
-  position: fixed;
-  background: black;
-  top: 50%;
-  left: 50%;
-
-  width: 12px;
-  height: 12px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,1) 0%,
-      rgba(255,255,255,0.55) 25%,
-      rgba(255,255,255,0.18) 55%,
-      rgba(255,255,255,0) 75%
-    );
-
-  filter: blur(10px);
-
-  transform:
-    translate(-50%, -50%)
-    scale(0);
-
-  pointer-events: none;
-
-  z-index: 1;
-
-  animation:
-    glowGrow 2.5s ease-out forwards,
-    glowFade 2s ease forwards 1.8s;
-}
-
-@keyframes glowGrow {
-
-  to {
-    transform:
-      translate(-50%, -50%)
-      scale(240);
-  }
-}
-
-@keyframes glowFade {
-
-  to {
-    opacity: 0;
-  }
-}
-
-/* =========================================
-   BILD
-========================================= */
-
-.logo {
-  width: 100%;
-  height: 100vh;
-  object-fit: cover;
-  display: block;
-  opacity: 0;
-  animation:
-    imageFadeIn
-    var(--image-duration)
-    ease
-    forwards;
-
-  position: relative;
-  z-index: 2;
-}
-
-@keyframes imageFadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
-/* =========================================
-   TEXT CONTAINER
-========================================= */
-
-.center-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%) translateY(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+a234c35
+style.css
   white-space: nowrap;
   text-align: center;
   pointer-events: none;
@@ -189,10 +16,10 @@ body {
   z-index: 10000;
   color: white;
   opacity: 0;
-  font-size:
-    clamp(1rem, 3vw + 1vh, 5rem);
+  font-size:   
+    clamp(1rem, 5vw + 1vh, 5rem);
   line-height: 1.1;
-  transform: translateY(60vh);
+  transform: translateY(140vh);
   text-shadow:
     0 0 8px rgba(255,255,255,0.35);
   will-change:
@@ -213,44 +40,35 @@ body {
 
 @keyframes letterMove {
 
-  /* Von unten – knapp unterhalb des Screens */
+  /* Start unten */
   0% {
     opacity: 0;
-    transform: translateY(55vh);
+    transform: translateY(120vh);
   }
 
-  /* Sichtbar – gerade eingeflogen */
-  8% {
+  /* Ganz oben */
+  20% {
     opacity: 1;
-<<<<<<< HEAD
-    transform: translateY(55vh);
-=======
-    transform: translateY(-40em);
->>>>>>> parent of 0929ecf (Update style.css)
+    transform: translateY(-40vh);
   }
 
-  /* Fährt nach oben bis zum oberen Rand */
-  25% {
+  /* Zur Mitte */
+  35% {
     opacity: 1;
-    transform: translateY(-45vh);
+    transform: translateY(0);
   }
 
-  /* Zurück zur Mitte */
-  45% {
-    opacity: 1;
-    transform: translateY(-50%);
-  }
-
-  /* Bleibt in der Mitte */
+  /* In Mitte bleiben */
   70% {
     opacity: 1;
-    transform: translateY(-50%);
+    transform: translateY(0);
   }
 
-  /* Fährt nach unten bis zum unteren Rand und verschwindet */
+  /* Nach unten */
   100% {
-    opacity: 0;
-    transform: translateY(50vh);
+    opacity: 1;
+    transform:
+      translateY(35em);
   }
 }
 
