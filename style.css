@@ -119,7 +119,7 @@ body {
 
 .logo {
   width: 100%;
-  height: 100vh;
+  height: calc(100vh+50px);
   object-fit: cover;
   display: block;
   opacity: 0;
