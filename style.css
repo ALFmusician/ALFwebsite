@@ -4,9 +4,9 @@
   --image-duration: 2.5s;
 
   --text-duration: 18s;
+
   --letter-stagger: 0.08s;
 
-  /* Abstand unter Bild */
   --bottom-gap: 33px;
 }
 
@@ -35,32 +35,7 @@ body {
 }
 
 /* =========================================
-   SEITENRÄNDER
-========================================= */
-
-.sidebar {
-  position: fixed;
-
-  top: 0;
-
-  width: 70px;
-  height: 100vh;
-
-  background: var(--green);
-
-  z-index: 20;
-}
-
-.sidebar.left {
-  left: 0;
-}
-
-.sidebar.right {
-  right: 0;
-}
-
-/* =========================================
-   MAIN LAYOUT
+   MAIN WRAPPER
 ========================================= */
 
 .main-wrapper {
@@ -71,12 +46,9 @@ body {
   justify-content: center;
   align-items: flex-start;
 
-  padding-left: 70px;
-  padding-right: 70px;
+  overflow: hidden;
 
   position: relative;
-
-  overflow: hidden;
 }
 
 /* =========================================
@@ -109,8 +81,6 @@ body {
   align-items: flex-start;
 
   overflow: visible;
-
-  z-index: 2;
 }
 
 /* =========================================
@@ -218,12 +188,7 @@ body {
 
   pointer-events: none;
 
-  z-index: 999;
-
-  font-size:
-    clamp(1.2rem, 5vw, 5rem);
-
-  line-height: 1.1;
+  z-index: 9999;
 }
 
 /* =========================================
@@ -233,38 +198,43 @@ body {
 .center-text span {
   display: inline-block;
 
+  position: relative;
+
+  z-index: 10000;
+
   color: white;
 
   opacity: 0;
 
+  font-size:
+    clamp(1.2rem, 5vw, 5rem);
+
+  line-height: 1.1;
+
   transform: translateY(140vh);
-
-  animation:
-    letterAnimation
-    var(--text-duration)
-    ease
-    forwards;
-
-  animation-delay:
-    calc(var(--i) * var(--letter-stagger));
 
   text-shadow:
     0 0 8px rgba(255,255,255,0.35);
 
   will-change:
     transform,
-    opacity;
+    opacity,
+    text-shadow;
 
-  position: relative;
+  animation:
+    letterMove var(--text-duration) ease forwards,
+    silverFlash 2.2s ease-in-out infinite;
 
-  z-index: 1000;
+  animation-delay:
+    calc(var(--i) * var(--letter-stagger)),
+    13s;
 }
 
 /* =========================================
-   LETTER ANIMATION
+   TEXT ANIMATION
 ========================================= */
 
-@keyframes letterAnimation {
+@keyframes letterMove {
 
   /* Start unten */
   0% {
@@ -272,7 +242,7 @@ body {
     transform: translateY(140vh);
   }
 
-  /* Ganz nach oben */
+  /* Ganz oben */
   20% {
     opacity: 1;
     transform: translateY(-42vh);
@@ -284,41 +254,47 @@ body {
     transform: translateY(0);
   }
 
-  /* Halten */
+  /* In Mitte bleiben */
   70% {
     opacity: 1;
     transform: translateY(0);
   }
 
-  /* Silber Flash */
-  74% {
-    opacity: 1;
-
-    text-shadow:
-      0 0 12px rgba(255,255,255,1),
-      0 0 30px rgba(220,220,220,0.9),
-      0 0 60px rgba(180,180,180,0.75);
-  }
-
-  /* Normal */
-  78% {
-    opacity: 1;
-
-    text-shadow:
-      0 0 8px rgba(255,255,255,0.35);
-  }
-
-  /* Endposition unter Bild */
+  /* Nach unten */
   100% {
     opacity: 1;
 
     transform:
       translateY(
         calc(
-          (50vh - 50%)
-          + var(--bottom-gap)
+          50vh + var(--bottom-gap)
         )
       );
+  }
+}
+
+/* =========================================
+   SILBER FLASH
+========================================= */
+
+@keyframes silverFlash {
+
+  0% {
+    text-shadow:
+      0 0 8px rgba(255,255,255,0.35);
+  }
+
+  50% {
+    text-shadow:
+      0 0 12px rgba(255,255,255,1),
+      0 0 28px rgba(220,220,220,0.95),
+      0 0 60px rgba(180,180,180,0.85),
+      0 0 100px rgba(255,255,255,0.6);
+  }
+
+  100% {
+    text-shadow:
+      0 0 8px rgba(255,255,255,0.35);
   }
 }
 
@@ -330,7 +306,7 @@ body {
 
   .image-wrapper {
     height: auto;
-    padding-bottom: 120px;
+    padding-bottom: 140px;
   }
 
   .logo {
@@ -338,8 +314,7 @@ body {
 
     max-height:
       calc(
-        100vh
-        - 120px
+        100vh - 140px
       );
 
     object-fit: contain;
@@ -348,16 +323,7 @@ body {
 
 @media (max-width: 900px) {
 
-  .sidebar {
-    width: 40px;
-  }
-
-  .main-wrapper {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-
-  .center-text {
+  .center-text span {
     font-size:
       clamp(1rem, 7vw, 3rem);
   }
@@ -365,12 +331,7 @@ body {
 
 @media (max-width: 600px) {
 
-  .main-wrapper {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .center-text {
+  .center-text span {
     font-size:
       clamp(0.9rem, 8vw, 2rem);
   }
