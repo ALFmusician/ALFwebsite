@@ -1,208 +1,156 @@
-/*style.css*/
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  overflow: hidden;
-
-  background: #008000; /* GRÜN fix */
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  font-family: Arial, sans-serif;
-
-   padding-left: 77px;
-   padding-right: 77px;
-   padding-top: 0px;
-
-   box-sizing: border-box;
+:root {
+  --sidebar-width: 77px;
+  --bg-green: green;
+  --entry-speed: 0.05s; /* Geschwindigkeit des Buchstabeneinzugs */
 }
 
-.content {
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: black;
+  overflow-x: hidden;
+  font-family: 'Arial Black', Arial, sans-serif;
+}
+
+/* Fixierte grüne Seitenränder */
+.sidebar {
+  position: fixed;
+  top: 0;
+  width: var(--sidebar-width);
+  height: 100%;
+  background-color: var(--bg-green);
+  z-index: 100;
+}
+.left { left: 0; }
+.right { right: 0; }
+
+.main-wrapper {
+  margin: 0 var(--sidebar-width);
+  min-height: 100vh;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  width: 100%;
+  background-color: black;
+  animation: bgToGreen 1s forwards 9s; /* Hintergrund wird grün beim Fall */
 }
 
-/* GRÜNER RAHMEN LINKS/RECHTS (fixe Breite) */
-.frame {
-  width: min(1080px, 100%);
-  height: 100vh;
-  background: black;
-  margin: 0 auto;
-  position: relative;
-  overflow: hidden;
-}
-
-.white-flash {
+/* 1. Wachsender weißer Punkt */
+.white-point {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 20px;
-  height: 20px;
-  background: white;
+  width: 2px;
+  height: 2px;
+  background: radial-gradient(circle, white 0%, rgba(255,255,255,0.5) 60%, transparent 100%);
   border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  z-index: 50;
-
-  animation: flash 2s ease-out forwards;
+  transform: translate(-50%, -50%);
+  animation: growCircle 3s forwards;
+  z-index: 1;
 }
 
-@keyframes flash {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(80);
-    opacity: 0;
-  }
+@keyframes growCircle {
+  to { width: 3500px; height: 3500px; }
 }
 
-/* nach Animation entfernen */
-.white-flash {
-  animation-delay: 0s;
-  animation-fill-mode: forwards;
-}
-
-.stage {
+.content {
   position: relative;
+  z-index: 10;
   width: 100%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .logo {
   width: 100%;
   max-width: 1080px;
-  display: block;
-  margin: 0 auto;
-
   opacity: 0;
-  transform: translateY(10px);
-
-  animation: logoIn 1.8s ease forwards 2.2s;
+  animation: fadeIn 2s forwards 3s;
 }
 
-@keyframes logoIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.text {
+/* 2. Text-Styling & Positionierung */
+.name {
   position: absolute;
-  color: white;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 250px; /* Startposition über dem Logo */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  font-size: clamp(2rem, 8vw, 5rem);
-  text-align: center;
+  width: 90%;
+  color: white;
   margin: 0;
-  pointer-events: none;
+  font-size: clamp(1.5rem, 6vw, 4rem);
+  text-transform: uppercase;
 }
 
-/* =========================
-   LETTER ENTRY
-========================= */
-
-.letter {
+.name span {
   display: inline-block;
   opacity: 0;
-  transform: translateY(40px);
-
- animation: 
-    letterEntry 0.8s forwards,
-    letterFall 1.5s forwards 6.5s, 
-    silverFlash 4s infinite 8.5s;
+  transform: translateY(150px);
+  /* Einzug | Fall | Flash */
+  animation: 
+    letterEntry 0.6s forwards,
+    letterFall 1.5s forwards 9s,
+    silverFlash 4s infinite 11s;
 }
 
-/* Staggered Letter Delays */
-.center-text span:nth-child(1) { animation-delay: 4.0s, 6.5s, 8.5s; }
-.center-text span:nth-child(2) { animation-delay: 4.1s, 6.5s, 8.5s; }
-.center-text span:nth-child(3) { animation-delay: 4.2s, 6.5s, 8.5s; }
-.center-text span:nth-child(4) { animation-delay: 4.3s, 6.5s, 8.5s; }
-.center-text span:nth-child(5) { animation-delay: 4.4s, 6.5s, 8.5s; }
-.center-text span:nth-child(6) { animation-delay: 4.5s, 6.5s, 8.5s; }
-.center-text span:nth-child(7) { animation-delay: 4.6s, 6.5s, 8.5s; }
-.center-text span:nth-child(8) { animation-delay: 4.7s, 6.5s, 8.5s; }
-.center-text span:nth-child(9) { animation-delay: 4.8s, 6.5s, 8.5s; }
-.center-text span:nth-child(10) { animation-delay: 4.0s, 6.5s, 8.5s; }
-.center-text span:nth-child(11) { animation-delay: 4.1s, 6.5s, 8.5s; }
-.center-text span:nth-child(12) { animation-delay: 4.1s, 6.5s, 8.5s; }
-.center-text span:nth-child(13) { animation-delay: 4.2s, 6.5s, 8.5s; }
-.center-text span:nth-child(14) { animation-delay: 4.3s, 6.5s, 8.5s; }
-.center-text span:nth-child(15) { animation-delay: 4.4s, 6.5s, 8.5s; }
-.center-text span:nth-child(16) { animation-delay: 4.5s, 6.5s, 8.5s; }
-.center-text span:nth-child(17) { animation-delay: 4.6s, 6.5s, 8.5s; }
-.center-text span:nth-child(18) { animation-delay: 4.7s, 6.5s, 8.5s; }
-.center-text span:nth-child(19) { animation-delay: 4.8s, 6.5s, 8.5s; }
-.center-text span:nth-child(20) { animation-delay: 4.1s, 6.5s, 8.5s; }
-.center-text span:nth-child(21) { animation-delay: 4.1s, 6.5s, 8.5s; }
-.center-text span:nth-child(22) { animation-delay: 4.1s, 6.5s, 8.5s; }
+/* Leerzeichen-Handling */
+.name span.space {
+  width: 0.3em;
+}
 
+/* 3. Staggered Animation (21 Zeichen inkl. Punkte/Leerzeichen) */
+.name span:nth-child(1)  { animation-delay: 5.0s, 9s, 11s; }
+.name span:nth-child(2)  { animation-delay: 5.1s, 9s, 11s; }
+.name span:nth-child(3)  { animation-delay: 5.2s, 9s, 11s; }
+.name span:nth-child(4)  { animation-delay: 5.3s, 9s, 11s; }
+.name span:nth-child(5)  { animation-delay: 5.4s, 9s, 11s; }
+.name span:nth-child(6)  { animation-delay: 5.5s, 9s, 11s; }
+.name span:nth-child(7)  { animation-delay: 5.6s, 9s, 11s; }
+.name span:nth-child(8)  { animation-delay: 5.7s, 9s, 11s; }
+.name span:nth-child(9)  { animation-delay: 5.8s, 9s, 11s; }
+.name span:nth-child(10) { animation-delay: 5.9s, 9s, 11s; }
+.name span:nth-child(11) { animation-delay: 6.0s, 9s, 11s; }
+.name span:nth-child(12) { animation-delay: 6.1s, 9s, 11s; }
+.name span:nth-child(13) { animation-delay: 6.2s, 9s, 11s; }
+.name span:nth-child(14) { animation-delay: 6.3s, 9s, 11s; }
+.name span:nth-child(15) { animation-delay: 6.4s, 9s, 11s; }
+.name span:nth-child(16) { animation-delay: 6.5s, 9s, 11s; }
+.name span:nth-child(17) { animation-delay: 6.6s, 9s, 11s; }
+.name span:nth-child(18) { animation-delay: 6.7s, 9s, 11s; }
+.name span:nth-child(19) { animation-delay: 6.8s, 9s, 11s; }
+.name span:nth-child(20) { animation-delay: 6.9s, 9s, 11s; }
+.name span:nth-child(21) { animation-delay: 7.0s, 9s, 11s; }
 
-@keyframes riseIn {
+/* Keyframes */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes bgToGreen {
+  to { background-color: var(--bg-green); }
+}
+
+@keyframes letterEntry {
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* =========================
-   FALL EFFECT
-========================= */
-
-.inner {
-  display: inline-block;
-
-  animation:
-    fall 1.5s ease forwards 6.5s,
-    flash 4s infinite 8.5s;
-}
-
-@keyframes fall {
+@keyframes letterFall {
   to {
-    transform: translateY(300px);
+    transform: translateY(400px); /* Fällt unter das Bild */
+    color: #C0C0C0; /* Silber */
+  }
+}
+
+@keyframes silverFlash {
+  0%, 85%, 100% { filter: brightness(1); text-shadow: none; }
+  92% { 
+    filter: brightness(1.8); 
+    text-shadow: 0 0 15px white, 0 0 5px silver;
     color: white;
-  }
-}
-
-/* =========================
-   SILVER FLASH
-========================= */
-
-@keyframes flash {
-  0%, 85%, 100% {
-    filter: brightness(1);
-    text-shadow: none;
-  }
-  92% {
-    filter: brightness(2);
-    text-shadow: 0 0 10px white, 0 0 20px white;
-  }
-}
-
-/* =========================
-   RESPONSIVE SAFETY
-========================= */
-
-@media (max-width: 768px) {
-  .logo {
-    max-width: 90%;
-  }
-
-  @keyframes fall {
-    to {
-      transform: translateY(200px);
-    }
   }
 }
