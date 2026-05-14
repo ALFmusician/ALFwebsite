@@ -11,7 +11,7 @@
 ========================================= */
 
 * {
-  margin: 0; 
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
@@ -22,9 +22,9 @@
 
 body {
   background: var(--green);
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
-  font-family: Arial, sans-serif;  
+  font-family: Arial, sans-serif;
 }
 
 /* =========================================
@@ -33,13 +33,12 @@ body {
 
 .main-wrapper {
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   overflow: hidden;
   position: relative;
-
 }
 
 /* =========================================
@@ -48,7 +47,7 @@ body {
 
 .content {
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -65,7 +64,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  overflow: visible;  
+  overflow: hidden;
 }
 
 /* =========================================
@@ -74,7 +73,6 @@ body {
 
 .white-point {
   position: fixed;
-  background: black;
   top: 50%;
   left: 50%;
   width: 12px;
@@ -119,17 +117,17 @@ body {
 
 .logo {
   width: 100%;
-  height: 100dvh;
+  height: calc(100dvh + 2px);
   object-fit: cover;
   display: block;
   opacity: 0;
+  position: relative;
+  z-index: 2;
   animation:
     imageFadeIn
     var(--image-duration)
     ease
     forwards;
-  position: relative;
-  z-index: 2;
 }
 
 @keyframes imageFadeIn {
@@ -146,8 +144,9 @@ body {
   position: absolute;
   left: 50%;
   top: 50%;
-  bottom: 0;
-  transform: translateX(-50%) translateY(-50%);
+  transform:
+    translateX(-50%)
+    translateY(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -162,27 +161,78 @@ body {
 ========================================= */
 
 .center-text span {
-  display: inline-block;
   position: relative;
-  z-index: 10000;
+  display: inline-block;
+  overflow: hidden;
+
   color: white;
   opacity: 0;
+
   font-size:
     clamp(1.2rem, 6vw, 5rem);
+
   line-height: 1.1;
+
   transform: translateY(140vh);
+
   text-shadow:
     0 0 8px rgba(255,255,255,0.35);
+
   will-change:
     transform,
     opacity,
     text-shadow;
+
+  z-index: 10000;
+
   animation:
-    letterMove var(--text-duration) ease forwards,
-    silverFlash 2.2s ease-in-out infinite;
+    letterMove var(--text-duration) ease forwards;
+    
   animation-delay:
-    calc(var(--i) * var(--letter-stagger)),
-    13s;
+    calc(var(--i) * var(--letter-stagger));
+}
+
+/* =========================================
+   SILBER FLASH OVERLAY
+========================================= */
+
+.center-text span::after {
+  content: "";
+
+  position: absolute;
+  top: -20%;
+  left: -160%;
+
+  width: 120%;
+  height: 140%;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.08) 20%,
+      rgba(255,255,255,0.95) 45%,
+      rgba(220,220,220,1) 50%,
+      rgba(255,255,255,0.95) 55%,
+      rgba(255,255,255,0.08) 80%,
+      rgba(255,255,255,0) 100%
+    );
+
+  filter:
+    blur(2px);
+
+  transform:
+    skewX(-22deg);
+
+  opacity: 0;
+
+  animation:
+    silverSweep 2.6s ease-in-out infinite;
+
+  animation-delay:
+    calc(13s + (var(--i) * 0.03s));
 }
 
 /* =========================================
@@ -224,29 +274,27 @@ body {
 }
 
 /* =========================================
-   SILBER FLASH
+   SILBER SWEEP FLASH
 ========================================= */
 
-@keyframes silverFlash {
+@keyframes silverSweep {
 
   0% {
     left: -160%;
-    text-shadow:
-      0 0 8px rgba(255,255,255,0.35);
+    opacity: 0;
   }
 
-  50% {
-    text-shadow:
-      0 0 12px rgba(255,255,255,1),
-      0 0 28px rgba(220,220,220,0.95),
-      0 0 60px rgba(180,180,180,0.85),
-      0 0 100px rgba(255,255,255,0.6);
+  10% {
+    opacity: 1;
+  }
+
+  45% {
+    opacity: 1;
   }
 
   100% {
     left: 220%;
-    text-shadow:
-      0 0 8px rgba(255,255,255,0.35);
+    opacity: 0;
   }
 }
 
@@ -263,11 +311,8 @@ body {
 
   .logo {
     height: auto;
-    max-height:
-      calc(
-        100vh - 10px
-      );
-    object-fit: contain;
+    min-height: 100dvh;
+    object-fit: cover;
   }
 }
 
