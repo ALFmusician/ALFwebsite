@@ -1,8 +1,22 @@
 :root {
   --green: #008000;
+
+  --circle-duration: 2.5s;
+
+  --image-delay: 1.2s;
+  --image-duration: 2.4s;
+
+  --text-start: 4.5s;
+
+  --letter-stagger: 0.08s;
+
+  --fall-start: 20s;
+  --fall-duration: 5s;
 }
 
-/* RESET */
+/* =========================================
+   RESET
+========================================= */
 
 * {
   margin: 0;
@@ -10,149 +24,385 @@
   box-sizing: border-box;
 }
 
-/* BODY */
+/* =========================================
+   BODY
+========================================= */
 
 body {
-  background: var(--green);
+  background: black;
+
   min-height: 100vh;
-  font-family: Arial, sans-serif;
+
   overflow: hidden;
-}
 
-/* STAGE */
+  font-family: Arial, sans-serif;
 
-.stage {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding:
-    20px
-    60px
-    80px;
-}
-
-/* BILDRAHMEN */
-
-.image-frame {
   position: relative;
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-/* BILD */
+/* =========================================
+   GRÜNER HINTERGRUND
+========================================= */
 
-.logo {
-  width: 100%;
-  height: auto;
-  display: block;
+body::after {
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  background: var(--green);
+
+  z-index: -3;
+
   opacity: 0;
+
   animation:
-    showImage 2s ease forwards;
+    showGreenBackground 0.2s forwards 0.4s;
 }
 
-@keyframes showImage {
+@keyframes showGreenBackground {
   to {
     opacity: 1;
   }
 }
 
-/* TEXT */
+/* =========================================
+   SEITENRÄNDER
+========================================= */
 
-.text {
-  position: absolute;
-  inset: 0;
+.sidebar {
+  position: fixed;
+
+  top: 0;
+
+  width: 70px;
+  height: 100vh;
+
+  background: var(--green);
+
+  z-index: 10;
+
+  opacity: 0;
+
+  animation:
+    showSidebars 0.4s forwards 7s;
+}
+
+.sidebar.left {
+  left: 0;
+}
+
+.sidebar.right {
+  right: 0;
+}
+
+@keyframes showSidebars {
+  to {
+    opacity: 1;
+  }
+}
+
+/* =========================================
+   LAYOUT
+========================================= */
+
+.main-wrapper {
+  width: 100%;
+  min-height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: none;
-  white-space: nowrap;
-  font-size: clamp(1.2rem, 6vw, 5rem);
+
+  padding:
+    20px
+    85px
+    90px;
+}
+
+.content {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+}
+
+.image-wrapper {
+  position: relative;
+
+  width: 100%;
+  max-width: 1200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: visible;
+
   z-index: 2;
 }
 
-/* LEERZEICHEN */
+/* =========================================
+   WEISSER GLOW-KREIS
+========================================= */
 
-.space {
-  width: 0.4em;
-}
+.white-point {
+  position: fixed;
 
-/* BUCHSTABEN */
+  top: 50%;
+  left: 50%;
 
-.text span:not(.space) {
-  display: inline-block;
-  color: white;
-  opacity: 0;
-  transform: translateY(120vh);
-  text-shadow:
-    0 0 8px rgba(255,255,255,0.8);
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,0.65) 22%,
+      rgba(255,255,255,0.2) 55%,
+      rgba(255,255,255,0) 75%
+    );
+
+  filter: blur(10px);
+
+  mix-blend-mode: screen;
+
+  pointer-events: none;
+
+  z-index: 1;
+
   animation:
-    moveLetter 28s ease forwards,
-    flash 2s infinite;
-  animation-delay:
-    calc(var(--i) * 0.08s),
-    3s;
+    growCircle var(--circle-duration) ease-out forwards,
+    fadeCircle 2s ease forwards 1.8s;
 }
 
-/* HAUPTANIMATION */
-@keyframes moveLetter {
-  
-  /* Start unter Bild */
+@keyframes growCircle {
+  to {
+    transform:
+      translate(-50%, -50%)
+      scale(240);
+  }
+}
+
+@keyframes fadeCircle {
+  to {
+    opacity: 0;
+  }
+}
+
+/* =========================================
+   BILD
+========================================= */
+
+.logo {
+  width: 100%;
+
+  max-width: 1100px;
+
+  max-height: 78vh;
+
+  object-fit: contain;
+
+  display: block;
+
+  position: relative;
+
+  z-index: 2;
+
+  opacity: 0;
+
+  animation:
+    imageFadeIn
+    var(--image-duration)
+    ease
+    forwards
+    var(--image-delay);
+}
+
+@keyframes imageFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* =========================================
+   TEXT-CONTAINER
+========================================= */
+
+.center-text {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-wrap: nowrap;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+
+  z-index: 50;
+
+  font-size:
+    clamp(1.2rem, 5vw, 5rem);
+
+  line-height: 1.1;
+}
+
+.center-text .space {
+  width: 0.45em;
+}
+
+/* =========================================
+   BUCHSTABEN
+========================================= */
+
+.center-text span:not(.space) {
+  display: inline-block;
+
+  position: relative;
+
+  color: white;
+
+  opacity: 0;
+
+  transform: translateY(120vh);
+
+  text-shadow:
+    0 0 4px rgba(255,255,255,0.9),
+    0 0 14px rgba(255,255,255,0.55);
+
+  z-index: 100;
+
+  will-change:
+    transform,
+    opacity;
+
+  animation:
+    letterEntrance 2.8s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    letterFall var(--fall-duration) ease-in forwards,
+    flashEffect 2.2s ease-in-out infinite;
+
+  animation-delay:
+    calc(var(--text-start) + (var(--i) * var(--letter-stagger))),
+    calc(var(--fall-start) + (var(--i) * 0.05s)),
+    8s;
+}
+
+/* =========================================
+   EINFLUG ZUR MITTE
+========================================= */
+
+@keyframes letterEntrance {
+
   0% {
     opacity: 0;
     transform: translateY(120vh);
   }
-  /* Hoch zur Mitte */
-  10% {
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
-  /* In der Mitte bleiben */
-  70% {
+}
+
+/* =========================================
+   NACH UNTEN FALLEN
+========================================= */
+
+@keyframes letterFall {
+
+  0% {
     opacity: 1;
     transform: translateY(0);
   }
-  /* Nach unten fallen */
+
   100% {
     opacity: 1;
     transform: translateY(42vh);
   }
 }
 
-/* LEICHTES FLASHEN */
-@keyframes flash {
+/* =========================================
+   FLASH-EFFEKT
+========================================= */
+
+@keyframes flashEffect {
+
   0% {
-    opacity: 0.85;
+    filter: brightness(1);
   }
+
   50% {
-    opacity: 1;
+    filter: brightness(1.9);
+
+    text-shadow:
+      0 0 10px rgba(255,255,255,1),
+      0 0 26px rgba(255,255,255,0.75);
   }
+
   100% {
-    opacity: 0.85;
+    filter: brightness(1.1);
   }
 }
 
-/* RESPONSIVE */
+/* =========================================
+   RESPONSIVE
+========================================= */
 
 @media (max-width: 900px) {
-  .stage {
-    padding:
-      20px
-      20px
-      60px;
+
+  .sidebar {
+    width: 40px;
   }
 
-  .text {
-    font-size: clamp(1rem, 7vw, 3rem);
+  .main-wrapper {
+    padding:
+      20px
+      55px
+      80px;
+  }
+
+  .logo {
+    max-height: 70vh;
+  }
+
+  .center-text {
+    font-size:
+      clamp(1.1rem, 7vw, 3rem);
   }
 }
 
 @media (max-width: 600px) {
-  .text {
-    font-size: clamp(0.9rem, 8vw, 2rem);
+
+  .main-wrapper {
+    padding:
+      10px
+      20px
+      70px;
+  }
+
+  .logo {
+    max-height: 62vh;
+  }
+
+  .center-text {
+    font-size:
+      clamp(0.9rem, 8vw, 2rem);
   }
 }
