@@ -250,7 +250,7 @@ body {
   100% {
     opacity: 1;
     transform:
-      translateY(50vh);
+      translateY(50%);
   }
 }
 
