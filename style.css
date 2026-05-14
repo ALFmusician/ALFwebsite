@@ -169,7 +169,7 @@ body {
   top: 50%;
   left: 50%;
   bottom: 0;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -192,7 +192,7 @@ body {
   font-size:
     clamp(1rem, 5vw + 1vh, 5rem);
   line-height: 1.1;
-  transform: translateY(140vh);
+  transform: translateY(60vh);
   text-shadow:
     0 0 8px rgba(255,255,255,0.35);
   will-change:
@@ -212,25 +212,41 @@ body {
 ========================================= */
 
 @keyframes letterMove {
+
+  /* Von unten – knapp unterhalb des Screens */
   0% {
     opacity: 0;
-    transform: translateY(100vh);   /* kommt von unten */
+    transform: translateY(55vh);
   }
-  20% {
+
+  /* Sichtbar – gerade eingeflogen */
+  8% {
     opacity: 1;
-    transform: translateY(-100vh);  /* fährt nach ganz oben */
+    transform: translateY(55vh);
   }
-  35% {
+
+  /* Fährt nach oben bis zum oberen Rand */
+  25% {
     opacity: 1;
-    transform: translateY(-50%);    /* zurück zur Mitte (wegen top: 50%) */
+    transform: translateY(-45vh);
   }
+
+  /* Zurück zur Mitte */
+  45% {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+
+  /* Bleibt in der Mitte */
   70% {
     opacity: 1;
-    transform: translateY(-50%);    /* bleibt in der Mitte */
+    transform: translateY(-50%);
   }
+
+  /* Fährt nach unten bis zum unteren Rand und verschwindet */
   100% {
-    opacity: 1;
-    transform: translateY(100vh);   /* fährt nach unten raus */
+    opacity: 0;
+    transform: translateY(50vh);
   }
 }
 
