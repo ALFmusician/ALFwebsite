@@ -17,6 +17,7 @@
 * {
   margin: 0;
   padding: 0;
+  padding-left: 30px;
   box-sizing: border-box;
 }
 
@@ -162,7 +163,7 @@ body {
   position: relative;
 
   z-index: 2;
-  padding-left: 30px;
+  
 }
 
 @keyframes imageFadeIn {
