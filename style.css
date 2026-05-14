@@ -184,34 +184,23 @@ body {
 
 .center-text span {
   display: inline-block;
-
   position: relative;
-
   z-index: 10000;
-
   color: white;
-
   opacity: 0;
-
   font-size:
-    clamp(1.2rem, 6vw, 5rem);
-
+    clamp(1rem, 3vw + 1vh, 5rem);
   line-height: 1.1;
-
   transform: translateY(140vh);
-
   text-shadow:
     0 0 8px rgba(255,255,255,0.35);
-
   will-change:
     transform,
     opacity,
     text-shadow;
-
   animation:
     letterMove var(--text-duration) ease forwards,
     silverFlash 2.2s ease-in-out infinite;
-
   animation-delay:
     calc(var(--i) * var(--letter-stagger)),
     13s;
@@ -226,13 +215,13 @@ body {
   /* Start unten */
   0% {
     opacity: 0;
-    transform: translateY(120vh);
+    transform: translateY(120em);
   }
 
   /* Ganz oben */
   20% {
     opacity: 1;
-    transform: translateY(-40vh);
+    transform: translateY(-40em);
   }
 
   /* Zur Mitte */
@@ -251,7 +240,7 @@ body {
   100% {
     opacity: 1;
     transform:
-      translateY(35vh);
+      translateY(35em);
   }
 }
 
