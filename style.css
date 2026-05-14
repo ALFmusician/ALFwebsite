@@ -33,7 +33,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  animation: bodyToGreen 1s forwards 7.2s;
+  animation: bodyToGreen 1s forwards 2s;
 }
 
 /* =========================================
@@ -71,6 +71,7 @@ body {
 ========================================= */
 
 .main-wrapper {
+  background: var(--green);
   width: 100%;
   min-height: 100vh;
   display: flex;
