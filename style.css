@@ -4,10 +4,10 @@
   --image-delay: 1.4s;
   --image-duration: 3s;
   --text-start: 6s;
-  --letter-speed: 2s;
+  --letter-speed: 3s;
   --letter-stagger: 0.2s;
   --fall-delay: 20s;
-  --fall-duration: 5s;
+  --fall-duration: 15s;
 }
 
 /* =========================================
@@ -33,7 +33,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  animation: bodyToGreen 0.5s forwards 3s;
+  animation: bodyToGreen 0s forwards 2s;
 }
 
 /* =========================================
