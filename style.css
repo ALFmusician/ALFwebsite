@@ -166,6 +166,7 @@ body {
 
 .center-text {
   position: absolute;
+  top: 50%;
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);
