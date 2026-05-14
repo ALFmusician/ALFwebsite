@@ -263,7 +263,7 @@ body {
   100% {
     opacity: 1;
     transform:
-      translateY(35vh);
+      translateY(10%);
   }
 }
 
