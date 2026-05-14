@@ -1,5 +1,4 @@
-a234c35
-style.css
+/* style.css */
   white-space: nowrap;
   text-align: center;
   pointer-events: none;
@@ -28,7 +27,7 @@ style.css
     text-shadow;
   animation:
     letterMove var(--text-duration) ease forwards,
-    silverFlash 2.2s ease-in-out infinite;
+    silverFlash 2.2s ease-in-out infinite both;
   animation-delay:
     calc(var(--i) * var(--letter-stagger)),
     13s;
