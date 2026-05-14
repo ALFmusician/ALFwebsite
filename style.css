@@ -32,7 +32,7 @@ body {
   font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   animation: bodyToGreen 1s forwards 7.2s;
 }
 
@@ -66,9 +66,9 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding:
-    40px
+    0px
     calc(70px + 20px)
     80px;
 }
