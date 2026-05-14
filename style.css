@@ -211,36 +211,25 @@ body {
 ========================================= */
 
 @keyframes letterMove {
-
-  /* Start unten */
   0% {
     opacity: 0;
-    transform: translateY(120em);
+    transform: translateY(100vh);   /* kommt von unten */
   }
-
-  /* Ganz oben */
   20% {
     opacity: 1;
-    transform: translateY(-140em);
+    transform: translateY(-100vh);  /* fährt nach ganz oben */
   }
-
-  /* Zur Mitte */
   35% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-50%);    /* zurück zur Mitte (wegen top: 50%) */
   }
-
-  /* In Mitte bleiben */
   70% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-50%);    /* bleibt in der Mitte */
   }
-
-  /* Nach unten */
   100% {
     opacity: 1;
-    transform:
-      translateY(35em);
+    transform: translateY(100vh);   /* fährt nach unten raus */
   }
 }
 
