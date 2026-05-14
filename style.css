@@ -275,7 +275,11 @@ body {
     opacity: 1;
 
     transform:
-      translateY(110vh);
+      translateY(
+        calc(
+          50vh + var(--bottom-gap)
+        )
+      );
   }
 }
 
