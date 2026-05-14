@@ -1,13 +1,13 @@
 :root {
   --green: #008000;
-  --circle-duration: 2s;
+  --circle-duration: 3,5s;
   --image-delay: 2s;
   --image-duration: 2s;
-  --text-start: 4s;
-  --letter-speed: 0.7s;
+  --text-start: 6,5s;
+  --letter-speed: 1,5s;
   --letter-stagger: 0.08s;
-  --fall-delay: 7s;
-  --fall-duration: 1.4s;
+  --fall-delay: 15s;
+  --fall-duration: 4s;
 }
 
 /* =========================================
