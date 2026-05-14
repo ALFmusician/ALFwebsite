@@ -220,11 +220,9 @@ body {
     letterSequence02 5s forwards,
     flashEffect 2.2s infinite;
   animation-delay:
-    calc(
-      var(--text-start) +
-      (var(--i) * var(--letter-stagger))
-    ),
-    12s;
+    calc(var(--text-start) + (var(--i) * var(--letter-stagger))),
+    10s,
+    20s;
   color: rgba(255,255,255,0.9);
 background:
   linear-gradient(
