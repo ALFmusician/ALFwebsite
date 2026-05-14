@@ -110,8 +110,8 @@ body {
     0 0 220px rgba(255,255,255,0.55),
     0 0 420px rgba(255,255,255,0.35);
   animation:
-    growCircle var(--circle-duration)
-    forwards;
+    growCircle 2s forwards,
+    fadeCircle 1s forwards 2s;
 }
 
 @keyframes growCircle {
@@ -119,6 +119,12 @@ body {
     transform:
       translate(-50%, -50%)
       scale(350);
+  }
+}
+
+@keyframes fadeCircle {
+  to {
+    opacity: 0;
   }
 }
 
@@ -198,45 +204,54 @@ body {
 
 @keyframes letterSequence {
 
+  /* Start unter Bild */
   0% {
     opacity: 0;
-    transform: translateY(220px);
-    color: white;
-    filter: brightness(1);
+    transform: translateY(500px);
   }
 
-  15% {
+  /* Sichtbar werden */
+  10% {
+    opacity: 1;
+  }
+
+  /* Hoch bis über Bild */
+  35% {
+    opacity: 1;
+    transform: translateY(-260px);
+  }
+
+  /* Zurück zur Mitte */
+  50% {
     opacity: 1;
     transform: translateY(0);
-    color: white;
-    filter: brightness(1);
   }
 
-  55% {
+  /* Kurz stehen */
+  65% {
     opacity: 1;
     transform: translateY(0);
-    color: white;
-    filter: brightness(1);
   }
 
-  75% {
+  /* Nach unten fallen */
+  85% {
     opacity: 1;
     transform: translateY(320px);
     color: #d0d0d0;
     text-shadow:
-      0 0 10px #ffffff,
-      0 0 25px #ffffff,
-      0 0 45px #ffffff;
-    filter: brightness(2.2);
+      0 0 10px #fff,
+      0 0 25px #fff,
+      0 0 50px #fff;
+    filter: brightness(2);
   }
 
+  /* Endzustand */
   100% {
     opacity: 1;
     transform: translateY(320px);
     color: #c0c0c0;
     text-shadow:
-      0 0 4px #ffffff;
-    filter: brightness(1);
+      0 0 5px #fff;
   }
 }
 
