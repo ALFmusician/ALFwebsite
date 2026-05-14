@@ -216,7 +216,8 @@ body {
   opacity: 0;
   transform: translateY(220px);
   animation:
-    letterSequence 5s forwards,
+    letterSequence01 5s forwards,
+    letterSequence02 5s forwards,
     flashEffect 2.2s infinite;
   animation-delay:
     calc(
@@ -252,39 +253,36 @@ background-size: 300% 100%;
    KOMBINIERTE TEXTANIMATION
 ========================================= */
 
-@keyframes letterSequence {
-
+@keyframes letterSequence01 {
   /* Start unter Bild */
   0% {
     opacity: 0;
     transform: translateY(500px);
   }
-
   /* Sichtbar werden */
-  10% {
+  50% {
     opacity: 1;
   }
-
   /* Hoch bis über Bild */
-  35% {
+  80% {
     opacity: 1;
     transform: translateY(-260px);
   }
-
   /* Zurück zur Mitte */
-  50% {
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
+}
 
-  /* Kurz stehen */
-  65% {
+@keyframes letterSequence02 {
+   /* Kurz stehen */
+  0% {
     opacity: 1;
     transform: translateY(0);
   }
-
   /* Nach unten fallen */
-  90% {
+  50% {
     opacity: 1;
     transform: translateY(320px);
     color: white;
@@ -293,7 +291,6 @@ background-size: 300% 100%;
       0 0 10px rgba(255,255,255,0.7);
     filter: brightness(1.4);
   }
-
   /* Endzustand */
   100% {
     opacity: 1;
