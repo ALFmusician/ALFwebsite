@@ -5,6 +5,7 @@
   text-align: center;
   pointer-events: none;
   z-index: 9999;
+  --text-duration: 6s;
 }
 
 /* =========================================
