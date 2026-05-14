@@ -1,15 +1,11 @@
 :root {
   --green: #008000;
-
   --circle-duration: 2s;
   --image-delay: 2s;
   --image-duration: 2s;
-
   --text-start: 4s;
-
   --letter-speed: 0.7s;
   --letter-stagger: 0.08s;
-
   --fall-delay: 7s;
   --fall-duration: 1.4s;
 }
@@ -31,16 +27,12 @@
 body {
   background: black;
   min-height: 100vh;
-
   overflow-x: hidden;
   overflow-y: auto;
-
   font-family: Arial, sans-serif;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   animation: bodyToGreen 1s forwards 7.2s;
 }
 
@@ -53,9 +45,7 @@ body {
   top: 0;
   width: 70px;
   height: 100vh;
-
   background: var(--green);
-
   z-index: 20;
 }
 
@@ -74,11 +64,9 @@ body {
 .main-wrapper {
   width: 100%;
   min-height: 100vh;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding:
     40px
     calc(70px + 20px)
@@ -93,10 +81,8 @@ body {
 
 .image-wrapper {
   position: relative;
-
   width: 100%;
   max-width: 1200px;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -108,42 +94,32 @@ body {
 
 .white-point {
   position: fixed;
-
   top: 50%;
   left: 50%;
-
   width: 10px;
   height: 10px;
-
   border-radius: 50%;
-
   background: white;
-
   transform:
     translate(-50%, -50%)
     scale(0);
-
   z-index: 0;
-
   box-shadow:
     0 0 50px rgba(255,255,255,0.95),
     0 0 120px rgba(255,255,255,0.75),
     0 0 220px rgba(255,255,255,0.55),
     0 0 420px rgba(255,255,255,0.35);
-
   animation:
     growCircle var(--circle-duration)
     forwards;
 }
 
 @keyframes growCircle {
-
   to {
     transform:
       translate(-50%, -50%)
       scale(350);
   }
-
 }
 
 /* =========================================
@@ -153,20 +129,13 @@ body {
 .logo {
   width: 100%;
   max-width: 1100px;
-
   max-height: 80vh;
-
   object-fit: contain;
-
   height: auto;
-
   display: block;
-
   opacity: 0;
-
   position: relative;
   z-index: 2;
-
   animation:
     imageFadeIn
     var(--image-duration)
@@ -175,11 +144,9 @@ body {
 }
 
 @keyframes imageFadeIn {
-
   to {
     opacity: 1;
   }
-
 }
 
 /* =========================================
@@ -188,30 +155,20 @@ body {
 
 .center-text {
   position: absolute;
-
   top: 50%;
   left: 50%;
-
   transform:
     translate(-50%, -50%);
-
   z-index: 3;
-
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
   width: 90%;
-
   color: white;
-
   text-align: center;
-
   font-size:
     clamp(2rem, 6vw, 5rem);
-
   line-height: 1.2;
-
   pointer-events: none;
 }
 
@@ -222,17 +179,12 @@ body {
 .center-text span:not(.space) {
 
   display: inline-block;
-
   opacity: 0;
-
   transform: translateY(220px);
-
   animation:
-
     letterSequence
     5s
     forwards;
-
   animation-delay:
     calc(
       var(--text-start) +
@@ -269,32 +221,23 @@ body {
 
   75% {
     opacity: 1;
-
     transform: translateY(320px);
-
     color: #d0d0d0;
-
     text-shadow:
       0 0 10px #ffffff,
       0 0 25px #ffffff,
       0 0 45px #ffffff;
-
     filter: brightness(2.2);
   }
 
   100% {
     opacity: 1;
-
     transform: translateY(320px);
-
     color: #c0c0c0;
-
     text-shadow:
       0 0 4px #ffffff;
-
     filter: brightness(1);
   }
-
 }
 
 /* =========================================
@@ -306,7 +249,6 @@ body {
   to {
     background: var(--green);
   }
-
 }
 
 /* =========================================
@@ -314,13 +256,11 @@ body {
 ========================================= */
 
 @media (max-width: 900px) {
-
   .sidebar {
     width: 40px;
   }
 
   .main-wrapper {
-
     padding:
       20px
       calc(40px + 15px)
@@ -332,17 +272,13 @@ body {
   }
 
   .center-text {
-
     font-size:
       clamp(1.6rem, 7vw, 3rem);
   }
-
 }
 
 @media (max-width: 600px) {
-
   .center-text {
-
     font-size:
       clamp(1.2rem, 8vw, 2.2rem);
   }
@@ -350,5 +286,4 @@ body {
   .logo {
     max-height: 60vh;
   }
-
 }
