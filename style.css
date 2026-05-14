@@ -265,11 +265,7 @@ body {
     opacity: 1;
 
     transform:
-      translateY(
-        calc(
-          50vh + var(--bottom-gap)
-        )
-      );
+      translateY(110vh);
   }
 }
 
