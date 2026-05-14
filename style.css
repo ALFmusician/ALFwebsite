@@ -33,7 +33,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  animation: bodyToGreen 1.5s forwards 3s;
+  animation: bodyToGreen 0.5s forwards 3s;
 }
 
 /* =========================================
