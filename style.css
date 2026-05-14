@@ -190,7 +190,7 @@ body {
   color: white;
   opacity: 0;
   font-size:
-    clamp(1rem, 5vw + 1vh, 5rem);
+    clamp(1rem, 3vw + 1vh, 5rem);
   line-height: 1.1;
   transform: translateY(60vh);
   text-shadow:
