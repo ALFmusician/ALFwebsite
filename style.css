@@ -314,7 +314,7 @@ body {
 
     max-height:
       calc(
-        100vh - 140px
+        100vh - 10px
       );
 
     object-fit: contain;
