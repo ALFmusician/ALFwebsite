@@ -173,6 +173,7 @@ body {
   justify-content: center;
   align-items: center;
   white-space: nowrap;
+  text-align: center;
   pointer-events: none;
   z-index: 9999;
 }
