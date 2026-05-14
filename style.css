@@ -250,11 +250,7 @@ body {
   100% {
     opacity: 1;
     transform:
-<<<<<<< HEAD
-      translateY(-50vh);
-=======
-      translateY(5000%);
->>>>>>> parent of 2b085b0 (Update style.css)
+      translateY(35vh);
   }
 }
 
