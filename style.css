@@ -121,6 +121,7 @@ body {
   min-width: 100%;
   max-height: calc(100dvh + 2px);
   object-fit: cover;
+  object-position: top;
   display: block;
   opacity: 0;
   position: relative;
