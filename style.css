@@ -199,14 +199,14 @@ body {
    SILBER FLASH OVERLAY
 ========================================= */
 
-.center-text span::after {
+.center-text::after {
   content: "";
 
   position: absolute;
   top: -20%;
-  left: -160%;
+  left: -100%;
 
-  width: 120%;
+  width: 200%;
   height: 140%;
 
   pointer-events: none;
@@ -223,19 +223,12 @@ body {
       rgba(255,255,255,0) 100%
     );
 
-  filter:
-    blur(2px);
-
-  transform:
-    skewX(-22deg);
-
+  filter: blur(2px);
+  transform: skewX(-22deg);
   opacity: 0;
 
-  animation:
-    silverSweep 2.6s ease-in-out infinite;
-
-  animation-delay:
-    calc(13s + (var(--i) * 0.03s));
+  animation: silverSweep 2.6s ease-in-out forwards;
+  animation-delay: calc(var(--text-duration) / 2);
 }
 
 /* =========================================
