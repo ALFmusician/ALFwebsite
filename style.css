@@ -199,6 +199,7 @@ body {
    SILBER FLASH OVERLAY
 ========================================= */
 
+.center-text::before,
 .center-text::after {
   content: "";
 
@@ -215,20 +216,30 @@ body {
     linear-gradient(
       115deg,
       rgba(255,255,255,0) 0%,
-      rgba(255,255,255,0.08) 20%,
-      rgba(255,255,255,0.95) 45%,
-      rgba(220,220,220,1) 50%,
-      rgba(255,255,255,0.95) 55%,
-      rgba(255,255,255,0.08) 80%,
+      rgba(255,255,255,0.06) 10%,
+      rgba(255,255,255,0.15) 18%,
+      rgba(255,255,255,0.9) 42%,
+      rgba(220,220,220,0.95) 50%,
+      rgba(255,255,255,0.9) 58%,
+      rgba(255,255,255,0.15) 82%,
+      rgba(255,255,255,0.06) 90%,
       rgba(255,255,255,0) 100%
     );
 
   filter: blur(2px);
-  transform: skewX(-22deg);
   opacity: 0;
+}
 
-  animation: silverSweep 2.6s ease-in-out forwards;
-  animation-delay: calc(var(--text-duration) / 2);
+.center-text::before {
+  transform: skewX(-22deg);
+  animation: silverSweepMid 2s ease-in-out forwards;
+  animation-delay: calc(var(--text-duration) * 0.5);
+}
+
+.center-text::after {
+  transform: skewX(-22deg) translateY(35vh);
+  animation: silverSweepBottom 10s ease-in-out infinite;
+  animation-delay: var(--text-duration);
 }
 
 /* =========================================
@@ -273,19 +284,57 @@ body {
    SILBER SWEEP FLASH
 ========================================= */
 
-@keyframes silverSweep {
-
+@keyframes silverSweepMid {
   0% {
     left: -160%;
     opacity: 0;
   }
 
-  10% {
+  15% {
+    left: -120%;
     opacity: 1;
   }
 
-  45% {
+  70% {
+    left: 180%;
     opacity: 1;
+  }
+
+  90% {
+    left: 220%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 220%;
+    opacity: 0;
+  }
+}
+
+@keyframes silverSweepBottom {
+  0%{
+    left: -160%;
+    opacity: 0;
+  }
+
+  10%{
+    left: -140%;
+    opacity: 0;
+  }
+
+  20% {
+    left: 180%;
+    opacity: 1;
+  }
+
+  70% {
+    left: 180%;
+    opacity: 1;
+  }
+
+  90% {
+    left: 220%;
+    opacity: 0;
   }
 
   100% {
