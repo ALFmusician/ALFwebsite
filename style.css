@@ -377,3 +377,138 @@ body {
       clamp(0.9rem, 8vw, 2rem);
   }
 }
+
+
+/* =========================================
+   RADIAL NAVIGATION
+========================================= */
+
+:root {
+  --disk-size: clamp(420px, 72vmin, 840px);
+  --disk-opacity: 0.2;
+  --line-alpha: 0.5;
+  --item-width: clamp(120px, 14vw, 180px);
+  --item-radius: calc(var(--disk-size) / 2 + var(--item-width) / 2);
+}
+
+.nav-toggle {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 10050;
+  background: rgba(255,255,255,0.12);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.5);
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.radial-nav {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: var(--disk-size);
+  height: var(--disk-size);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  z-index: 10040;
+}
+
+.radial-nav.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.disk {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  background:
+    radial-gradient(circle at center, transparent 40%, rgba(255,255,255,var(--disk-opacity)) 41%, rgba(255,255,255,var(--disk-opacity)) 70%, transparent 71%);
+  border: 2px solid rgba(255,255,255,var(--line-alpha));
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,var(--line-alpha)),
+    inset 0 0 0 6px rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.disk-hole {
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.disk-separators {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}  
+
+/* .separator {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 44%;
+  background: rgba(255,255,255,var(--line-alpha));
+  transform-origin: bottom;
+  transform: rotate(calc(var(--i) * 45deg));
+} */
+
+.radial-item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--item-width);
+  transform-origin: center center;
+  transform: rotate(calc(var(--i) * 45deg)) translateY(calc(-1 * var(--item-radius))) rotate(calc(var(--i) * -45deg));
+  color: white;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,var(--line-alpha));
+  padding: 12px 0;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  opacity: 0.92;
+  transition: background 180ms ease, opacity 180ms ease, transform 180ms ease;
+  outline: none;
+  text-align: center;
+}
+
+.radial-item:hover,
+.radial-item:focus {
+  outline: none;
+  box-shadow: none;
+  background: rgba(255,255,255,0.3);
+}
+
+.radial-item.active {
+  background: rgba(255,255,255,0.4);
+  opacity: 1;
+}
+
+/* Make sure the toggle and nav respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .disk,
+  .center-text span,
+  .white-point {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+

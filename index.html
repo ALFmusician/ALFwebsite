@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
@@ -11,12 +11,31 @@
 
 <body>
 
-  <!-- Seitenränder -->
+  <!-- SeitenrÃ¤nder -->
   <div class="sidebar left"></div>
   <div class="sidebar right"></div>
 
   <!-- Glow -->
   <div class="white-point"></div>
+
+  <!-- Navigation trigger -->
+  <button class="nav-toggle" aria-expanded="false" aria-controls="radial-nav" aria-label="Open navigation">☰</button>
+
+  <nav id="radial-nav" class="radial-nav" aria-hidden="true" aria-label="Navigation drawer">
+    <div class="disk" role="menu" aria-label="Navigation disk">
+      <div class="disk-hole" aria-hidden="true"></div>
+      <div class="disk-separators">
+        <span class="separator" style="--i:0"></span>
+        <span class="separator" style="--i:1"></span>
+        <span class="separator" style="--i:2"></span>
+        <span class="separator" style="--i:3"></span>
+        <span class="separator" style="--i:4"></span>
+        <span class="separator" style="--i:5"></span>
+        <span class="separator" style="--i:6"></span>
+        <span class="separator" style="--i:7"></span>
+      </div>
+    </div>
+  </nav>
 
   <!-- Hauptlayout -->
   <main class="main-wrapper">
@@ -72,5 +91,68 @@
 
   </main>
 
+  <script>
+  // Navigation open/close and auto-hide after 10 seconds of inactivity.
+  (function(){
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.getElementById('radial-nav');
+    const segments = Array.from(nav.querySelectorAll('.radial-item'));
+    let hideTimer = null;
+    const HIDE_DELAY = 10000;
+
+    function openNav(){
+      nav.classList.add('open');
+      toggle.setAttribute('aria-expanded','true');
+      nav.setAttribute('aria-hidden','false');
+      resetTimer();
+    }
+
+    function closeNav(){
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded','false');
+      nav.setAttribute('aria-hidden','true');
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+
+    function resetTimer(){
+      if(hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(closeNav, HIDE_DELAY);
+    }
+
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      nav.classList.contains('open') ? closeNav() : openNav();
+    });
+
+    segments.forEach((segment) => {
+      segment.addEventListener('click', (event) => {
+        event.stopPropagation();
+        segments.forEach((btn) => btn.classList.remove('active'));
+        segment.classList.add('active');
+        resetTimer();
+      });
+    });
+
+    ['mousemove','touchstart','keydown'].forEach((eventName) => {
+      document.addEventListener(eventName, () => {
+        if (nav.classList.contains('open')) resetTimer();
+      }, { passive: true });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!nav.contains(event.target) && event.target !== toggle) {
+        closeNav();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeNav();
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
+
