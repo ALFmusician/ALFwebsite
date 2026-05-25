@@ -1,1369 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BREN — Trackmania World Champion</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:        #04060a;
-      --surface:   #0b0f18;
-      --card:      #10151f;
-      --accent:    #00e5ff;
-      --accent2:   #ff3a6e;
-      --gold:      #ffd246;
-      --text:      #e8eaf0;
-      --muted:     #6b7490;
-      --border:    rgba(0,229,255,0.12);
-      --glow:      0 0 30px rgba(0,229,255,0.25);
-    }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <title>Rosenberg. IT ab Werk.</title>
 
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 17px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── SCAN-LINE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.08) 2px,
-        rgba(0,0,0,0.08) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    /* ── NOISE TEXTURE ── */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      opacity: 0.5;
-      z-index: 9998;
-    }
-
-    /* ════════════════════════════════
-       NAV
-    ════════════════════════════════ */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 4vw;
-      height: 64px;
-      background: rgba(4,6,10,0.85);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem;
-      letter-spacing: 4px;
-      color: var(--accent);
-      text-shadow: var(--glow);
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--accent); }
-
-    .nav-cta {
-      background: var(--accent);
-      color: #000 !important;
-      padding: 6px 18px;
-      font-weight: 700 !important;
-      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
-    }
-    .nav-cta:hover { background: #fff; color: #000 !important; }
-
-    /* ════════════════════════════════
-       HERO
-    ════════════════════════════════ */
-    #hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    /* Animated speed-lines background */
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0,229,255,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 30% 80%, rgba(255,58,110,0.06) 0%, transparent 70%),
-        linear-gradient(160deg, #04060a 0%, #070c14 40%, #060b16 100%);
-    }
-
-    .speedlines {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-    .speedlines span {
-      position: absolute;
-      left: 55%;
-      top: 50%;
-      width: 120vw;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, rgba(0,229,255,0.18) 60%, transparent 100%);
-      transform-origin: 0% 50%;
-      animation: speedline 2.4s linear infinite;
-      opacity: 0;
-    }
-    .speedlines span:nth-child(1)  { transform: rotate(-8deg);  animation-delay: 0s;    animation-duration: 2.2s; }
-    .speedlines span:nth-child(2)  { transform: rotate(-4deg);  animation-delay: 0.3s;  animation-duration: 2.6s; }
-    .speedlines span:nth-child(3)  { transform: rotate(0deg);   animation-delay: 0.6s;  animation-duration: 2.0s; }
-    .speedlines span:nth-child(4)  { transform: rotate(4deg);   animation-delay: 0.9s;  animation-duration: 2.8s; }
-    .speedlines span:nth-child(5)  { transform: rotate(8deg);   animation-delay: 1.2s;  animation-duration: 2.3s; }
-    .speedlines span:nth-child(6)  { transform: rotate(12deg);  animation-delay: 1.5s;  animation-duration: 2.5s; }
-    .speedlines span:nth-child(7)  { transform: rotate(-12deg); animation-delay: 1.8s;  animation-duration: 2.1s; }
-    .speedlines span:nth-child(8)  { transform: rotate(16deg);  animation-delay: 2.1s;  animation-duration: 2.7s; }
-    @keyframes speedline {
-      0%   { opacity: 0; transform: rotate(var(--r)) scaleX(0); }
-      20%  { opacity: 1; }
-      80%  { opacity: 0.5; }
-      100% { opacity: 0; transform: rotate(var(--r)) scaleX(1.4); }
-    }
-
-    /* Grid overlay */
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 0 8vw;
-      max-width: 700px;
-      animation: fadeUp 1s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 3px;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 1.2rem;
-    }
-    .hero-tag::before {
-      content: '';
-      display: block;
-      width: 28px; height: 1px;
-      background: var(--accent);
-    }
-
-    .hero-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(5rem, 13vw, 11rem);
-      line-height: 0.9;
-      letter-spacing: 6px;
-      color: #fff;
-      text-shadow:
-        0 0 60px rgba(0,229,255,0.3),
-        0 0 120px rgba(0,229,255,0.1);
-    }
-
-    .hero-name .accent-char { color: var(--accent); }
-
-    .hero-subtitle {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-      letter-spacing: 8px;
-      color: var(--muted);
-      margin-top: 0.3rem;
-      margin-bottom: 2rem;
-    }
-
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 2.5rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 14px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      border: 1px solid;
-      clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
-    }
-    .badge-gold   { border-color: var(--gold);   color: var(--gold);   }
-    .badge-cyan   { border-color: var(--accent);  color: var(--accent); }
-    .badge-red    { border-color: var(--accent2); color: var(--accent2);}
-
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--accent);
-      color: #000;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
-      letter-spacing: 3px;
-      padding: 12px 32px;
-      text-decoration: none;
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-      transition: background 0.2s, transform 0.2s;
-      margin-right: 14px;
-    }
-    .hero-cta:hover { background: #fff; transform: translateX(4px); }
-
-    .hero-cta-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
-      letter-spacing: 3px;
-      padding: 12px 32px;
-      text-decoration: none;
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .hero-cta-ghost:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* Floating stat cards */
-    .hero-stats {
-      position: absolute;
-      right: 6vw;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      z-index: 2;
-      animation: fadeUp 1s 0.4s ease both;
-    }
-
-    .stat-card {
-      background: rgba(11,15,24,0.8);
-      border: 1px solid var(--border);
-      padding: 18px 28px;
-      text-align: right;
-      backdrop-filter: blur(10px);
-      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: var(--accent);
-    }
-    .stat-number {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.4rem;
-      color: var(--accent);
-      line-height: 1;
-      text-shadow: var(--glow);
-    }
-    .stat-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 3px;
-      color: var(--muted);
-      text-transform: uppercase;
-      animation: bounce 2s infinite;
-    }
-    @keyframes bounce {
-      0%,100% { transform: translateX(-50%) translateY(0); }
-      50%      { transform: translateX(-50%) translateY(8px); }
-    }
-    .scroll-hint::after {
-      content: '';
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--muted), transparent);
-    }
-
-    /* ════════════════════════════════
-       SECTIONS – shared
-    ════════════════════════════════ */
-    section {
-      padding: 100px 8vw;
-    }
-
-    .section-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 4px;
-      color: var(--accent);
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 1rem;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      max-width: 60px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      letter-spacing: 4px;
-      line-height: 1;
-      margin-bottom: 3rem;
-    }
-
-    /* ════════════════════════════════
-       ABOUT
-    ════════════════════════════════ */
-    #about {
-      background: var(--surface);
-      position: relative;
-      overflow: hidden;
-    }
-    #about::before {
-      content: 'BREN';
-      position: absolute;
-      right: -2vw;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22vw;
-      color: rgba(0,229,255,0.03);
-      pointer-events: none;
-      letter-spacing: 10px;
-      white-space: nowrap;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    .about-text p {
-      color: rgba(232,234,240,0.75);
-      font-size: 1.05rem;
-      line-height: 1.8;
-      margin-bottom: 1.4rem;
-    }
-
-    .about-text p strong {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin-top: 2rem;
-    }
-
-    .info-item {
-      background: var(--card);
-      padding: 18px 22px;
-    }
-
-    .info-key {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .info-val {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-      color: var(--text);
-    }
-
-    /* Profile image placeholder */
-    .about-visual {
-      position: relative;
-    }
-
-    .player-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 40px;
-      text-align: center;
-      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-      position: relative;
-      overflow: hidden;
-    }
-    .player-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,229,255,0.08), transparent);
-    }
-
-    .player-avatar {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      margin: 0 auto 24px;
-      background:
-        radial-gradient(circle at 35% 35%, rgba(0,229,255,0.3), transparent 50%),
-        linear-gradient(135deg, #0d1a2a 0%, #0a1520 100%);
-      border: 2px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 4rem;
-      color: var(--accent);
-      text-shadow: var(--glow);
-      box-shadow: 0 0 40px rgba(0,229,255,0.2);
-      position: relative;
-      z-index: 1;
-    }
-
-    .player-handle {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem;
-      letter-spacing: 6px;
-      color: #fff;
-      position: relative;
-      z-index: 1;
-    }
-
-    .player-team {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-top: 6px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .player-nationality {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 16px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 2px;
-      color: var(--muted);
-      position: relative;
-      z-index: 1;
-    }
-    .flag {
-      font-size: 1.4rem;
-    }
-
-    .corner-decoration {
-      position: absolute;
-      width: 20px; height: 20px;
-    }
-    .corner-decoration.tl { top: 0; left: 0; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
-    .corner-decoration.br { bottom: 0; right: 0; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
-
-    /* ════════════════════════════════
-       ACHIEVEMENTS
-    ════════════════════════════════ */
-    #achievements {
-      background: var(--bg);
-    }
-
-    .achievements-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .achievement-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 30px 28px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
-    }
-
-    .achievement-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-    }
-
-    .achievement-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(0,229,255,0.04) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .achievement-card:hover::after { opacity: 1; }
-
-    .ach-year {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 2px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .ach-place {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      letter-spacing: 2px;
-      margin-bottom: 4px;
-    }
-    .ach-place.gold   { color: var(--gold); }
-    .ach-place.silver { color: #aab0c0; }
-    .ach-place.bronze { color: #cd7f32; }
-
-    .ach-event {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .ach-detail {
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    .ach-prize {
-      position: absolute;
-      top: 20px; right: 20px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--gold);
-      letter-spacing: 1px;
-    }
-
-    .featured-card {
-      grid-column: span 3;
-      background: linear-gradient(135deg, #0e1d12 0%, #071018 100%);
-      border-color: rgba(255,210,70,0.3);
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 30px;
-      align-items: center;
-      clip-path: none;
-    }
-    .featured-card:hover { border-color: var(--gold); }
-
-    .trophy-icon {
-      font-size: 4rem;
-      filter: drop-shadow(0 0 20px rgba(255,210,70,0.5));
-    }
-
-    /* ════════════════════════════════
-       DEEP DIP SECTION
-    ════════════════════════════════ */
-    #deepdip {
-      background: var(--surface);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .deepdip-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, transparent 0%, rgba(255,58,110,0.06) 100%);
-    }
-
-    .deepdip-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    .tower-viz {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-    }
-
-    .tower-segment {
-      width: 100%;
-      max-width: 280px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 10px 14px;
-      border-left: 2px solid;
-      position: relative;
-    }
-
-    .tower-segment.zone-1 { border-color: var(--accent2); }
-    .tower-segment.zone-2 { border-color: var(--gold); }
-    .tower-segment.zone-3 { border-color: var(--accent); }
-
-    .tower-pct {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
-      min-width: 52px;
-      color: var(--muted);
-    }
-
-    .tower-bar {
-      flex: 1;
-      height: 6px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .tower-fill {
-      height: 100%;
-      border-radius: 3px;
-      animation: fillBar 2s ease both;
-    }
-
-    @keyframes fillBar {
-      from { width: 0; }
-    }
-
-    .tower-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 1px;
-      color: var(--muted);
-      min-width: 60px;
-      text-align: right;
-    }
-
-    .deepdip-text h3 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      letter-spacing: 4px;
-      color: var(--accent2);
-      margin-bottom: 1rem;
-    }
-
-    .deepdip-text p {
-      color: rgba(232,234,240,0.72);
-      line-height: 1.8;
-      margin-bottom: 1rem;
-    }
-
-    .deepdip-stat {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-top: 2rem;
-      padding: 18px 24px;
-      background: rgba(255,58,110,0.06);
-      border: 1px solid rgba(255,58,110,0.2);
-    }
-
-    .deepdip-stat-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2.8rem;
-      color: var(--accent2);
-      line-height: 1;
-    }
-
-    .deepdip-stat-txt {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    /* ════════════════════════════════
-       EARNINGS TIMELINE
-    ════════════════════════════════ */
-    #earnings {
-      background: var(--bg);
-    }
-
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      position: relative;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 100px;
-      top: 0; bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, var(--accent), rgba(0,229,255,0.1));
-    }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 100px 1fr;
-      gap: 30px;
-      padding: 20px 0;
-      position: relative;
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: 97px;
-      top: 28px;
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 12px var(--accent);
-    }
-
-    .timeline-year {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-align: right;
-      padding-right: 20px;
-      padding-top: 4px;
-    }
-
-    .timeline-content {
-      padding-left: 20px;
-    }
-
-    .timeline-event {
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 2px;
-    }
-
-    .timeline-result {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 1.5px;
-      color: var(--accent);
-    }
-
-    .timeline-prize {
-      float: right;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--gold);
-    }
-
-    /* ════════════════════════════════
-       STREAMS / SOCIAL
-    ════════════════════════════════ */
-    #social {
-      background: var(--surface);
-      text-align: center;
-    }
-
-    .social-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .social-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 36px 20px;
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .social-card:hover { transform: translateY(-6px); }
-
-    .social-card.twitch { border-color: rgba(145,70,255,0.3); }
-    .social-card.twitch:hover { border-color: #9146ff; }
-
-    .social-card.youtube { border-color: rgba(255,0,0,0.2); }
-    .social-card.youtube:hover { border-color: #ff0000; }
-
-    .social-card.twitter { border-color: rgba(29,161,242,0.2); }
-    .social-card.twitter:hover { border-color: #1da1f2; }
-
-    .social-icon {
-      font-size: 2rem;
-    }
-
-    .social-platform {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 3px;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    .social-handle {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.3rem;
-      letter-spacing: 3px;
-      color: var(--text);
-    }
-
-    .live-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,0,0,0.15);
-      border: 1px solid rgba(255,0,0,0.4);
-      padding: 3px 10px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 2px;
-      color: #ff4444;
-    }
-    .live-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #ff4444;
-      animation: pulse 1s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity: 1; }
-      50%      { opacity: 0.3; }
-    }
-
-    /* ════════════════════════════════
-       FOOTER
-    ════════════════════════════════ */
-    footer {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      padding: 40px 8vw;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .footer-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      letter-spacing: 6px;
-      color: var(--accent);
-      text-shadow: var(--glow);
-    }
-
-    .footer-copy {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    /* ════════════════════════════════
-       RESPONSIVE
-    ════════════════════════════════ */
-    @media (max-width: 900px) {
-      .hero-stats { display: none; }
-      .about-grid, .deepdip-grid { grid-template-columns: 1fr; }
-      .achievements-grid { grid-template-columns: 1fr 1fr; }
-      .featured-card { grid-column: span 2; }
-      .social-grid { grid-template-columns: 1fr; max-width: 300px; }
-    }
-    @media (max-width: 600px) {
-      .achievements-grid { grid-template-columns: 1fr; }
-      .featured-card { grid-column: span 1; }
-      .nav-links { display: none; }
-      footer { flex-direction: column; gap: 12px; text-align: center; }
-      .timeline::before { left: 60px; }
-      .timeline-item { grid-template-columns: 60px 1fr; }
-      .timeline-item::before { left: 57px; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-<!-- ═══ NAV ═══ -->
-<nav>
-  <a class="nav-logo" href="#">BREN</a>
-  <ul class="nav-links">
-    <li><a href="#about">Profile</a></li>
-    <li><a href="#achievements">Achievements</a></li>
-    <li><a href="#deepdip">Deep Dip</a></li>
-    <li><a href="#earnings">Career</a></li>
-    <li><a href="#social" class="nav-cta">Live Stream</a></li>
-  </ul>
-</nav>
+  <!-- SeitenrÃ¤nder -->
+  <div class="sidebar left"></div>
+  <div class="sidebar right"></div>
 
-<!-- ═══ HERO ═══ -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="speedlines">
-    <span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span>
-  </div>
+  <!-- Glow -->
+  <div class="white-point"></div>
 
-  <div class="hero-content">
-    <div class="hero-tag">Trackmania — Pro Esports</div>
-    <h1 class="hero-name">BR<span class="accent-char">E</span>N</h1>
-    <div class="hero-subtitle">Brendan &quot;Bren&quot; Seve</div>
+  <!-- Navigation trigger -->
+  <button class="nav-toggle" aria-expanded="false" aria-controls="radial-nav" aria-label="Open navigation">☰</button>
 
-    <div class="hero-badges">
-      <span class="badge badge-gold">🏆 2023 World Champion</span>
-      <span class="badge badge-red">⚡ Deep Dip 1 &amp; 2 Winner</span>
-      <span class="badge badge-cyan">🇫🇷 France / 🇦🇺 Australia</span>
-    </div>
-
-    <a href="https://www.twitch.tv/BrenTM" target="_blank" class="hero-cta">▶ Watch on Twitch</a>
-    <a href="#about" class="hero-cta-ghost">View Profile</a>
-  </div>
-
-  <div class="hero-stats">
-    <div class="stat-card">
-      <div class="stat-number">$68K+</div>
-      <div class="stat-label">Total Prize Money</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">71</div>
-      <div class="stat-label">Tournaments Played</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">93K</div>
-      <div class="stat-label">Peak Viewers</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">40H</div>
-      <div class="stat-label">Deep Dip Stream</div>
-    </div>
-  </div>
-
-  <div class="scroll-hint">Scroll</div>
-</section>
-
-<!-- ═══ ABOUT ═══ -->
-<section id="about">
-  <div class="about-grid">
-    <div class="about-text">
-      <div class="section-label">01 — Player Profile</div>
-      <h2 class="section-title">The Champion from Down Under</h2>
-
-      <p>
-        <strong>Brendan "Bren" Seve</strong> is one of the best Trackmania players in the world. Born on December 23, 1998 in France, he grew up with the game and now lives in Australia — his passion for high-speed racing has taken him to the world stage.
-      </p>
-      <p>
-        In 2023, he crowned his career with the <strong>Trackmania World Championship</strong> title, which he claimed together with his teammate Otaaaq under the Karmine Corp banner. In the Grand Final, he defeated legends like five-time world champion CarlJr. and broke three world records in a single match.
-      </p>
-      <p>
-        Beyond competitive play, Bren is famous for his epic <strong>Deep Dip</strong> streams, where he conquered Trackmania's hardest maps live in front of thousands of viewers.
-      </p>
-
-      <div class="info-grid">
-        <div class="info-item">
-          <div class="info-key">Birthday</div>
-          <div class="info-val">Dec 23, 1998</div>
-        </div>
-        <div class="info-item">
-          <div class="info-key">Nationality</div>
-          <div class="info-val">🇫🇷 French</div>
-        </div>
-        <div class="info-item">
-          <div class="info-key">Residence</div>
-          <div class="info-val">🇦🇺 Australia</div>
-        </div>
-        <div class="info-item">
-          <div class="info-key">Current Team</div>
-          <div class="info-val">Twisted Minds</div>
-        </div>
-        <div class="info-item">
-          <div class="info-key">Twitch</div>
-          <div class="info-val">BrenTM</div>
-        </div>
-        <div class="info-item">
-          <div class="info-key">Active Since</div>
-          <div class="info-val">2018 — present</div>
-        </div>
+  <nav id="radial-nav" class="radial-nav" aria-hidden="true" aria-label="Navigation drawer">
+    <div class="disk" role="menu" aria-label="Navigation disk">
+      <div class="disk-hole" aria-hidden="true"></div>
+      <div class="disk-separators">
+        <span class="separator" style="--i:0"></span>
+        <span class="separator" style="--i:1"></span>
+        <span class="separator" style="--i:2"></span>
+        <span class="separator" style="--i:3"></span>
+        <span class="separator" style="--i:4"></span>
+        <span class="separator" style="--i:5"></span>
+        <span class="separator" style="--i:6"></span>
+        <span class="separator" style="--i:7"></span>
       </div>
     </div>
+  </nav>
 
-    <div class="about-visual">
-      <div class="player-card">
-        <div class="corner-decoration tl"></div>
-        <div class="corner-decoration br"></div>
-        <div class="player-avatar">B</div>
-        <div class="player-handle">BREN</div>
-        <div class="player-team">Twisted Minds · Trackmania</div>
-        <div class="player-nationality">
-          <span class="flag">🇫🇷</span>
-          <span>Brendan Seve</span>
-          <span class="flag">🇦🇺</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- Hauptlayout -->
+  <main class="main-wrapper">
 
-<!-- ═══ ACHIEVEMENTS ═══ -->
-<section id="achievements">
-  <div class="section-label">02 — Achievements</div>
-  <h2 class="section-title">Hall of Fame</h2>
+    <section class="content">
 
-  <div class="achievements-grid">
+      <div class="image-wrapper">
 
-    <!-- Featured -->
-    <div class="achievement-card featured-card">
-      <div class="trophy-icon">🏆</div>
-      <div>
-        <div class="ach-year">2023 — WORLD CHAMPIONSHIP</div>
-        <div class="ach-place gold" style="font-size:2.2rem;">1st Place — World Champion</div>
-        <div class="ach-event">TM World Tour 2023 — World Championship (with Otaaaq, Karmine Corp)</div>
-        <div class="ach-detail">First-ever duo-format World Championship. Bren defeated five-time champion CarlJr. in the Grand Final while setting 3 world records — "the best match of his long career."</div>
-      </div>
-      <div class="ach-prize">$5,921</div>
-    </div>
+        <!-- Bild -->
+        <img
+          src="rbw.png"
+          alt="Rosenberg Logo"
+          class="logo"
+        />
 
-    <div class="achievement-card">
-      <div class="ach-year">2024</div>
-      <div class="ach-place gold">1st Place</div>
-      <div class="ach-event">Deep Dip 2</div>
-      <div class="ach-detail">Back-to-back winner of the legendary climbing marathon.</div>
-      <div class="ach-prize">$16,340</div>
-    </div>
+        <!-- Text -->
+        <h1 class="center-text">
 
-    <div class="achievement-card">
-      <div class="ach-year">2025</div>
-      <div class="ach-place gold">1st Place</div>
-      <div class="ach-event">BIG Trackmania Cup</div>
-      <div class="ach-detail">Convincing victory at the high-profile BIG tournament.</div>
-      <div class="ach-prize">$3,514</div>
-    </div>
+          <span style="--i:0">R</span>
+          <span style="--i:1">o</span>
+          <span style="--i:2">s</span>
+          <span style="--i:3">e</span>
+          <span style="--i:4">n</span>
+          <span style="--i:5">b</span>
+          <span style="--i:6">e</span>
+          <span style="--i:7">r</span>
+          <span style="--i:8">g</span>
+          <span style="--i:9">.</span>
 
-    <div class="achievement-card">
-      <div class="ach-year">2025</div>
-      <div class="ach-place gold">1st Place</div>
-      <div class="ach-event">Maji Mondays Season 4</div>
-      <div class="ach-detail">Dominant performance in the popular online series.</div>
-      <div class="ach-prize">$1,654</div>
-    </div>
+          <span style="--i:10">&nbsp;&nbsp;</span>
 
-    <div class="achievement-card">
-      <div class="ach-year">2025</div>
-      <div class="ach-place silver">2nd Place</div>
-      <div class="ach-event">TM World Cup 2025</div>
-      <div class="ach-detail">Final showdown at the Trackmania World Cup 2025.</div>
-      <div class="ach-prize">$2,899</div>
-    </div>
+          <span style="--i:11">I</span>
+          <span style="--i:12">T</span>
 
-    <div class="achievement-card">
-      <div class="ach-year">2023</div>
-      <div class="ach-place gold">1st Place</div>
-      <div class="ach-event">Maji Mondays Season 2</div>
-      <div class="ach-detail">Series winner in one of the most-watched online formats.</div>
-      <div class="ach-prize">$5,606</div>
-    </div>
+          <span style="--i:13">&nbsp;</span>
 
-    <div class="achievement-card">
-      <div class="ach-year">2020</div>
-      <div class="ach-place gold">1st Place</div>
-      <div class="ach-event">Lyon e-Sport 13</div>
-      <div class="ach-detail">Early LAN triumph on the road to the top.</div>
-      <div class="ach-prize">$1,654</div>
-    </div>
+          <span style="--i:14">a</span>
+          <span style="--i:15">b</span>
 
-    <div class="achievement-card">
-      <div class="ach-year">2019</div>
-      <div class="ach-place gold">1st Place</div>
-      <div class="ach-event">ZeratoR Cup #7</div>
-      <div class="ach-detail">Victory at the popular French community tournament.</div>
-      <div class="ach-prize">$1,140</div>
-    </div>
+          <span style="--i:16">&nbsp;</span>
 
-  </div>
-</section>
+          <span style="--i:17">W</span>
+          <span style="--i:18">e</span>
+          <span style="--i:19">r</span>
+          <span style="--i:20">k</span>
+          <span style="--i:21">.</span>
 
-<!-- ═══ DEEP DIP ═══ -->
-<section id="deepdip">
-  <div class="deepdip-bg"></div>
+        </h1>
 
-  <div class="deepdip-grid">
-    <div class="deepdip-text">
-      <div class="section-label">03 — Legend</div>
-      <h2 class="section-title" style="color: var(--accent2);">Deep Dip<br>Back-to-back</h2>
-
-      <h3>The Hardest Climb</h3>
-      <p>
-        Deep Dip is a 2000-metre tower in Trackmania — no checkpoints, one mistake sends you all the way back to the bottom. The community calls it "impossible." Bren calls it conquered — twice.
-      </p>
-      <p>
-        During Deep Dip 1 he streamed for 40 hours straight on Twitch, in front of over 10,000 viewers. At one point he fell from 97% all the way back to zero. He started over. He won. The community exploded.
-      </p>
-      <p>
-        Deep Dip 2 repeated the feat — the biggest single prize pool of his career at over $16,000, cementing his name in Trackmania history forever.
-      </p>
-
-      <div class="deepdip-stat">
-        <div class="deepdip-stat-num">40H</div>
-        <div class="deepdip-stat-txt">
-          Non-stop stream for Deep Dip 1<br>
-          <span style="color: var(--accent); font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; letter-spacing: 1px;">10,000+ concurrent viewers</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="tower-viz">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:2px;color:var(--muted);margin-bottom:20px;text-transform:uppercase;">2000M Tower — Key Milestones</div>
-
-      <div class="tower-segment zone-3" style="--r:0deg;">
-        <div class="tower-pct">100%</div>
-        <div class="tower-bar"><div class="tower-fill" style="width:100%;background:var(--accent);"></div></div>
-        <div class="tower-label">FINISH 🏁</div>
-      </div>
-      <div class="tower-segment zone-3">
-        <div class="tower-pct">97%</div>
-        <div class="tower-bar"><div class="tower-fill" style="width:97%;background:var(--accent);"></div></div>
-        <div class="tower-label">Fell down ↓</div>
-      </div>
-      <div class="tower-segment zone-2">
-        <div class="tower-pct">75%</div>
-        <div class="tower-bar"><div class="tower-fill" style="width:75%;background:var(--gold);"></div></div>
-        <div class="tower-label">Zone 3</div>
-      </div>
-      <div class="tower-segment zone-2">
-        <div class="tower-pct">50%</div>
-        <div class="tower-bar"><div class="tower-fill" style="width:50%;background:var(--gold);"></div></div>
-        <div class="tower-label">Midpoint</div>
-      </div>
-      <div class="tower-segment zone-1">
-        <div class="tower-pct">25%</div>
-        <div class="tower-bar"><div class="tower-fill" style="width:25%;background:var(--accent2);"></div></div>
-        <div class="tower-label">Zone 1</div>
-      </div>
-      <div class="tower-segment zone-1">
-        <div class="tower-pct">0%</div>
-        <div class="tower-bar"><div class="tower-fill" style="width:2%;background:var(--accent2);"></div></div>
-        <div class="tower-label">Start 🚗</div>
       </div>
 
-      <div style="margin-top:24px;font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--accent2);letter-spacing:2px;text-align:center;">⚠ NO CHECKPOINTS — ONE MISTAKE = RESTART</div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ═══ EARNINGS / TIMELINE ═══ -->
-<section id="earnings">
-  <div class="section-label">04 — Career</div>
-  <h2 class="section-title">Prize Money &amp; Milestones</h2>
+  </main>
 
-  <div class="timeline">
+  <script>
+  // Navigation open/close and auto-hide after 10 seconds of inactivity.
+  (function(){
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.getElementById('radial-nav');
+    const segments = Array.from(nav.querySelectorAll('.radial-item'));
+    let hideTimer = null;
+    const HIDE_DELAY = 10000;
 
-    <div class="timeline-item">
-      <div class="timeline-year">2025</div>
-      <div class="timeline-content">
-        <div class="timeline-prize">$8,824</div>
-        <div class="timeline-event">BIG Trackmania Cup — 1st Place 🏆</div>
-        <div class="timeline-result">Season highlight · Maji Mondays S4 · Twitch Rivals</div>
-      </div>
-    </div>
+    function openNav(){
+      nav.classList.add('open');
+      toggle.setAttribute('aria-expanded','true');
+      nav.setAttribute('aria-hidden','false');
+      resetTimer();
+    }
 
-    <div class="timeline-item">
-      <div class="timeline-year">2024</div>
-      <div class="timeline-content">
-        <div class="timeline-prize">$18,045</div>
-        <div class="timeline-event">Deep Dip 2 — 1st Place 🏆</div>
-        <div class="timeline-result">Biggest single win · $16,340 · Back-to-back Champion</div>
-      </div>
-    </div>
+    function closeNav(){
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded','false');
+      nav.setAttribute('aria-hidden','true');
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
 
-    <div class="timeline-item">
-      <div class="timeline-year">2023</div>
-      <div class="timeline-content">
-        <div class="timeline-prize">$17,693</div>
-        <div class="timeline-event">Trackmania World Champion 🌍</div>
-        <div class="timeline-result">TMWT World Championship with Otaaaq (Karmine Corp) · Maji Mondays S2</div>
-      </div>
-    </div>
+    function resetTimer(){
+      if(hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(closeNav, HIDE_DELAY);
+    }
 
-    <div class="timeline-item">
-      <div class="timeline-year">2022</div>
-      <div class="timeline-content">
-        <div class="timeline-prize">$2,279</div>
-        <div class="timeline-event">Arctic Gaming Experience · TMGL World Cup</div>
-        <div class="timeline-result">5th–8th / 11th Place — building toward the world's best</div>
-      </div>
-    </div>
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      nav.classList.contains('open') ? closeNav() : openNav();
+    });
 
-    <div class="timeline-item">
-      <div class="timeline-year">2020</div>
-      <div class="timeline-content">
-        <div class="timeline-prize">$1,654</div>
-        <div class="timeline-event">Lyon e-Sport 13 — 1st Place 🏆</div>
-        <div class="timeline-result">First major LAN victory in the new Trackmania 2020</div>
-      </div>
-    </div>
+    segments.forEach((segment) => {
+      segment.addEventListener('click', (event) => {
+        event.stopPropagation();
+        segments.forEach((btn) => btn.classList.remove('active'));
+        segment.classList.add('active');
+        resetTimer();
+      });
+    });
 
-    <div class="timeline-item">
-      <div class="timeline-year">2019</div>
-      <div class="timeline-content">
-        <div class="timeline-prize">$2,596</div>
-        <div class="timeline-event">ZeratoR Cup #7 — 1st Place 🏆</div>
-        <div class="timeline-result">Team-based victory · ZLan participation</div>
-      </div>
-    </div>
+    ['mousemove','touchstart','keydown'].forEach((eventName) => {
+      document.addEventListener(eventName, () => {
+        if (nav.classList.contains('open')) resetTimer();
+      }, { passive: true });
+    });
 
-    <div class="timeline-item">
-      <div class="timeline-year">2018</div>
-      <div class="timeline-content">
-        <div class="timeline-prize">$1,232</div>
-        <div class="timeline-event">Breaking onto the big stage</div>
-        <div class="timeline-result">Giant Cup (3rd) · ZeratoR Cup #6 (2nd) — career beginnings</div>
-      </div>
-    </div>
+    document.addEventListener('click', (event) => {
+      if (!nav.contains(event.target) && event.target !== toggle) {
+        closeNav();
+      }
+    });
 
-  </div>
-
-  <!-- Total bar -->
-  <div style="margin-top:50px;padding:30px;background:var(--card);border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;text-align:center;">
-    <div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--accent);text-shadow:var(--glow);">$68,792</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;">Total Prize Money</div>
-    </div>
-    <div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--gold);">71</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;">Tournaments</div>
-    </div>
-    <div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--accent2);">8+</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;">1st Place Wins</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ SOCIAL ═══ -->
-<section id="social">
-  <div class="section-label" style="justify-content:center;">05 — Social</div>
-  <h2 class="section-title" style="text-align:center;">Folge Bren</h2>
-  <p style="text-align:center;color:var(--muted);margin-bottom:3rem;font-family:'Share Tech Mono',monospace;font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;">Live-Streams · Highlights · Updates</p>
-
-  <div class="social-grid">
-
-    <a href="https://www.twitch.tv/BrenTM" target="_blank" class="social-card twitch">
-      <div class="social-icon">📺</div>
-      <div class="social-platform">Twitch</div>
-      <div class="social-handle">BrenTM</div>
-      <div class="live-badge"><span class="live-dot"></span>Live</div>
-    </a>
-
-    <a href="https://www.youtube.com/@Bren_TM2" target="_blank" class="social-card youtube">
-      <div class="social-icon">▶️</div>
-      <div class="social-platform">YouTube</div>
-      <div class="social-handle">Bren_TM2</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:1.5px;">Highlights &amp; VODs</div>
-    </a>
-
-    <a href="https://twitter.com/BrenTM22" target="_blank" class="social-card twitter">
-      <div class="social-icon">🐦</div>
-      <div class="social-platform">Twitter / X</div>
-      <div class="social-handle">BrenTM22</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:1.5px;">News &amp; Updates</div>
-    </a>
-
-  </div>
-</section>
-
-<!-- ═══ FOOTER ═══ -->
-<footer>
-  <div class="footer-logo">BREN</div>
-  <div class="footer-copy">
-    © 2025 Bren — Brendan Seve · Trackmania World Champion 2023 · Deep Dip 1 &amp; 2
-  </div>
-  <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:2px;">
-    twitch.tv/BrenTM
-  </div>
-</footer>
-
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeNav();
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
+
