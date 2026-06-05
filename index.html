@@ -3,39 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Rosenberg. IT ab Werk.</title>
-
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <!-- SeitenrÃ¤nder -->
+  <!-- Seitenränder -->
   <div class="sidebar left"></div>
   <div class="sidebar right"></div>
 
   <!-- Glow -->
   <div class="white-point"></div>
 
-  <!-- Navigation trigger -->
-  <button class="nav-toggle" aria-expanded="false" aria-controls="radial-nav" aria-label="Open navigation">☰</button>
+  <!-- Nav Toggle Button -->
+  <button class="nav-toggle" aria-expanded="false" aria-controls="nav-overlay" aria-label="Navigation öffnen">☰</button>
 
-  <nav id="radial-nav" class="radial-nav" aria-hidden="true" aria-label="Navigation drawer">
-    <div class="disk" role="menu" aria-label="Navigation disk">
-      <div class="disk-hole" aria-hidden="true"></div>
-      <div class="disk-separators">
-        <span class="separator" style="--i:0"></span>
-        <span class="separator" style="--i:1"></span>
-        <span class="separator" style="--i:2"></span>
-        <span class="separator" style="--i:3"></span>
-        <span class="separator" style="--i:4"></span>
-        <span class="separator" style="--i:5"></span>
-        <span class="separator" style="--i:6"></span>
-        <span class="separator" style="--i:7"></span>
-      </div>
+  <!-- Navigation Overlay -->
+  <div id="nav-overlay" class="nav-overlay" aria-hidden="true">
+
+    <svg class="viewport-shape" aria-hidden="true">
+      <g class="segment-button" data-nav="home" aria-label="Startseite" role="button" tabindex="-1">
+        <path class="viewport-shape-path" d="" />
+        <g class="nav-marker" aria-hidden="true">
+          <path d="M-10,4 L0,-8 L10,4 Z" />
+          <rect x="-6" y="4" width="12" height="10" rx="1" />
+        </g>
+      </g>
+      <g class="segment-button" data-nav="ueber-uns" aria-label="Über uns" role="button" tabindex="-1">
+        <path class="viewport-shape-path" d="" />
+        <g class="nav-marker" aria-hidden="true">
+          <circle cx="0" cy="-4" r="5" />
+          <path d="M-7,8 a7,4 0 0,1 14,0" />
+        </g>
+      </g>
+      <g class="segment-button" data-nav="kontakt" aria-label="Kontakt" role="button" tabindex="-1">
+        <path class="viewport-shape-path" d="" />
+        <g class="nav-marker" aria-hidden="true">
+          <rect x="-12" y="-8" width="24" height="16" rx="2" />
+          <polyline points="-10,-6 0,2 10,-6" fill="none" />
+        </g>
+      </g>
+      <g class="segment-button" data-nav="news" aria-label="News" role="button" tabindex="-1">
+        <path class="viewport-shape-path" d="" />
+        <g class="nav-marker" aria-hidden="true">
+          <rect x="-12" y="-10" width="24" height="20" rx="2" />
+          <rect x="-8" y="-6" width="12" height="2" />
+          <rect x="-8" y="-2" width="18" height="2" />
+          <rect x="-8" y="2" width="6" height="2" />
+        </g>
+      </g>
+    </svg>
+
+    <div class="nav-html-labels" aria-hidden="true">
+      <span class="nav-html-label" data-label="Start">Start</span>
+      <span class="nav-html-label" data-label="Über uns">Über uns</span>
+      <span class="nav-html-label" data-label="Kontakt">Kontakt</span>
+      <span class="nav-html-label" data-label="News">News</span>
     </div>
-  </nav>
+
+  </div>
 
   <!-- Hauptlayout -->
   <main class="main-wrapper">
@@ -92,67 +119,149 @@
   </main>
 
   <script>
-  // Navigation open/close and auto-hide after 10 seconds of inactivity.
-  (function(){
-    const toggle = document.querySelector('.nav-toggle');
-    const nav = document.getElementById('radial-nav');
-    const segments = Array.from(nav.querySelectorAll('.radial-item'));
-    let hideTimer = null;
-    const HIDE_DELAY = 10000;
+  // ─── Navigation shape geometry ────────────────────────────────────────────
+  (function () {
+    const shapePaths     = Array.from(document.querySelectorAll('.viewport-shape-path'));
+    const navMarkers     = Array.from(document.querySelectorAll('.nav-marker'));
+    const segmentBtns    = Array.from(document.querySelectorAll('.segment-button'));
+    const navHtmlLabels  = Array.from(document.querySelectorAll('.nav-html-label'));
+    const segmentTargets = ['home', 'ueber-uns', 'kontakt', 'news'];
 
-    function openNav(){
-      nav.classList.add('open');
-      toggle.setAttribute('aria-expanded','true');
-      nav.setAttribute('aria-hidden','false');
+    function getRadii() {
+      // Scale rings proportionally to the smaller viewport dimension.
+      // Clamp so the rings never spill outside the screen.
+      const vmin   = Math.min(window.innerWidth, window.innerHeight);
+      const inner  = Math.round(Math.max(60,  Math.min(vmin * 0.22, 140)));
+      const outer  = Math.round(Math.max(110, Math.min(vmin * 0.42, 260)));
+      return { inner, outer };
+    }
+
+    function getLabelOffset() {
+      // Smaller offset on narrow screens so labels don't escape the viewport.
+      const vmin = Math.min(window.innerWidth, window.innerHeight);
+      return Math.round(Math.max(18, vmin * 0.045));
+    }
+
+    function updateGeometry() {
+      const cx = window.innerWidth  / 2;
+      const cy = window.innerHeight / 2;
+      const { inner: innerR, outer: outerR } = getRadii();
+      const labelOffset = getLabelOffset();
+
+      const pathData = [
+        `M ${cx} ${cy - outerR}`,
+        `L ${cx} ${cy - innerR}`,
+        `A ${innerR} ${innerR} 0 0 1 ${cx + innerR} ${cy}`,
+        `L ${cx + outerR} ${cy}`,
+        `A ${outerR} ${outerR} 0 0 0 ${cx} ${cy - outerR}`,
+        'Z'
+      ].join(' ');
+
+      const markerR   = (innerR + outerR) / 2;
+      const angles    = [Math.PI / 4, (3 * Math.PI) / 4, (5 * Math.PI) / 4, (7 * Math.PI) / 4];
+      const positions = angles.map(a => ({
+        x: Math.round(cx + markerR * Math.cos(a)),
+        y: Math.round(cy + markerR * Math.sin(a))
+      }));
+
+      shapePaths.forEach((path, i) => {
+        path.setAttribute('d', pathData);
+        const rots = [null, 90, 180, 270];
+        if (rots[i]) {
+          path.setAttribute('transform', `rotate(${rots[i]} ${cx} ${cy})`);
+        } else {
+          path.removeAttribute('transform');
+        }
+      });
+
+      navMarkers.forEach((marker, i) => {
+        marker.setAttribute('transform', `translate(${positions[i].x} ${positions[i].y})`);
+      });
+
+      navHtmlLabels.forEach((label, i) => {
+        label.style.left = positions[i].x + 'px';
+        label.style.top  = (positions[i].y + labelOffset) + 'px';
+      });
+    }
+
+    segmentBtns.forEach((btn, i) => {
+      btn.dataset.nav = segmentTargets[i];
+      btn.addEventListener('click', () => {
+        if (btn.dataset.nav) location.hash = `#${btn.dataset.nav}`;
+      });
+      btn.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+      });
+    });
+
+    let resizeTimer;
+    function onResize() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateGeometry, 50);
+    }
+
+    window.addEventListener('resize',            onResize);
+    window.addEventListener('orientationchange', updateGeometry);
+    updateGeometry();
+  })();
+
+  // ─── Navigation open / close / auto-hide ─────────────────────────────────
+  (function () {
+    const toggle  = document.querySelector('.nav-toggle');
+    const overlay = document.getElementById('nav-overlay');
+    const segBtns = Array.from(overlay.querySelectorAll('.segment-button'));
+    const HIDE_MS = 10000;
+    let   hideTimer = null;
+
+    function openNav() {
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Navigation schließen');
+      segBtns.forEach(b => b.setAttribute('tabindex', '0'));
       resetTimer();
     }
 
-    function closeNav(){
-      nav.classList.remove('open');
-      toggle.setAttribute('aria-expanded','false');
-      nav.setAttribute('aria-hidden','true');
+    function closeNav() {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Navigation öffnen');
+      segBtns.forEach(b => b.setAttribute('tabindex', '-1'));
       clearTimeout(hideTimer);
       hideTimer = null;
     }
 
-    function resetTimer(){
-      if(hideTimer) clearTimeout(hideTimer);
-      hideTimer = setTimeout(closeNav, HIDE_DELAY);
+    function resetTimer() {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(closeNav, HIDE_MS);
     }
 
-    toggle.addEventListener('click', (event) => {
-      event.stopPropagation();
-      nav.classList.contains('open') ? closeNav() : openNav();
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      overlay.classList.contains('open') ? closeNav() : openNav();
     });
 
-    segments.forEach((segment) => {
-      segment.addEventListener('click', (event) => {
-        event.stopPropagation();
-        segments.forEach((btn) => btn.classList.remove('active'));
-        segment.classList.add('active');
-        resetTimer();
-      });
+    overlay.addEventListener('click', e => {
+      e.stopPropagation();
+      resetTimer();
     });
 
-    ['mousemove','touchstart','keydown'].forEach((eventName) => {
-      document.addEventListener(eventName, () => {
-        if (nav.classList.contains('open')) resetTimer();
+    ['mousemove', 'touchstart', 'keydown'].forEach(evt => {
+      document.addEventListener(evt, () => {
+        if (overlay.classList.contains('open')) resetTimer();
       }, { passive: true });
     });
 
-    document.addEventListener('click', (event) => {
-      if (!nav.contains(event.target) && event.target !== toggle) {
-        closeNav();
-      }
+    document.addEventListener('click', e => {
+      if (!overlay.contains(e.target) && e.target !== toggle) closeNav();
     });
 
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        closeNav();
-      }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeNav();
     });
   })();
   </script>
+
 </body>
 </html>
-

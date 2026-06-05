@@ -4,28 +4,48 @@
   --text-duration: 18s;
   --letter-stagger: 0.08s;
   --glow-visible-delay: 0.8s;
-  --bottom-gap: 0px;
 }
 
 /* =========================================
    RESET
 ========================================= */
 
-* {
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 /* =========================================
-   BODY
+   HTML / BODY
 ========================================= */
+
+html {
+  /* Prevent iOS font-size inflation on orientation change */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   background: var(--green);
-  min-height: 100dvh;
+  width: 100%;
+  height: 100dvh;
   overflow: hidden;
   font-family: Arial, sans-serif;
+  /* Prevent pull-to-refresh / overscroll on mobile */
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* Auf schmalen Screens vertikales Scrollen erlauben,
+   damit das vollständige Bild erreichbar ist */
+@media (max-width: 768px) {
+  body {
+    height: auto;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 }
 
 /* =========================================
@@ -65,9 +85,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-left: 50px;
-  padding-right: 50px;
   overflow: hidden;
+  /* Horizontal padding scales with viewport — more room on mobile */
+  padding-left:  clamp(16px, 4vw, 50px);
+  padding-right: clamp(16px, 4vw, 50px);
 }
 
 /* =========================================
@@ -84,34 +105,25 @@ body {
   background:
     radial-gradient(
       circle,
-      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,1)    0%,
       rgba(255,255,255,0.55) 25%,
       rgba(255,255,255,0.18) 55%,
-      rgba(255,255,255,0) 75%
+      rgba(255,255,255,0)    75%
     );
-  /* filter: blur(10px); */
-  transform:
-    translate(-50%, -50%)
-    scale(0);
+  transform: translate(-50%, -50%) scale(0);
   pointer-events: none;
   z-index: 1;
   animation:
     glowGrow 2.5s ease-out forwards,
-    glowFade 2s ease forwards 1.8s;
+    glowFade 2s   ease     forwards 1.8s;
 }
 
 @keyframes glowGrow {
-  to {
-    transform:
-      translate(-50%, -50%)
-      scale(240);
-  }
+  to { transform: translate(-50%, -50%) scale(240); }
 }
 
 @keyframes glowFade {
-  to {
-    opacity: 0;
-  }
+  to { opacity: 0; }
 }
 
 /* =========================================
@@ -119,26 +131,84 @@ body {
 ========================================= */
 
 .logo {
-  min-width: 100%;
-  max-height: calc(100dvh + 2px);
+  width: 100%;
+  height: 100dvh;
   object-fit: cover;
-  object-position: top;
+  object-position: top center;
   display: block;
   opacity: 0;
   position: relative;
   z-index: 2;
   animation:
-    imageFadeIn
-    var(--image-duration)
-    ease
-    forwards;
+    imageFadeIn var(--image-duration) ease forwards;
   animation-delay: var(--glow-visible-delay);
 }
 
-@keyframes imageFadeIn {
-  to {
-    opacity: 1;
+/* =========================================
+   SCHMALE VIEWPORTS (≤ 768 px)
+   Bild in voller Breite, kein Crop
+========================================= */
+
+@media (max-width: 768px) {
+
+  /* Wrapper darf scrollen, damit das vollständige Bild sichtbar ist */
+  .main-wrapper,
+  .content {
+    height: auto;
+    min-height: 100dvh;
+    align-items: flex-start;
   }
+
+  /* Bild + Text untereinander im normalen Fluss */
+  .image-wrapper {
+    height: auto;
+    min-height: unset;
+    flex-direction: column;
+    align-items: center;
+    overflow: visible;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .logo {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: top center;
+  }
+
+  /* Text aus absolutem Positioning herauslösen,
+     direkt unter das Bild setzen */
+  .center-text {
+    position: static;
+    transform: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    max-width: 100%;
+    padding: clamp(12px, 4vw, 24px) clamp(12px, 4vw, 24px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Buchstaben: kurzes Fade-in von leicht unten, dann stabil */
+  .center-text span {
+    transform: translateY(24px);
+    animation: letterMobileIn var(--text-duration) ease forwards;
+    animation-delay: calc(var(--glow-visible-delay) + var(--i) * var(--letter-stagger));
+  }
+}
+
+@keyframes letterMobileIn {
+  0%   { opacity: 0; transform: translateY(24px); }
+  20%  { opacity: 1; transform: translateY(-4px);  }
+  35%  { opacity: 1; transform: translateY(0);     }
+  100% { opacity: 1; transform: translateY(0);     }
+}
+
+@keyframes imageFadeIn {
+  to { opacity: 1; }
 }
 
 /* =========================================
@@ -149,15 +219,15 @@ body {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform:
-    translateX(-50%)
-    translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
   white-space: nowrap;
   text-align: center;
   pointer-events: none;
+  /* Ensure text never bleeds outside viewport horizontally */
+  max-width: 96vw;
   z-index: 9999;
 }
 
@@ -169,31 +239,25 @@ body {
   position: relative;
   display: inline-block;
   overflow: hidden;
-
   color: white;
   opacity: 0;
 
-  font-size:
-    clamp(1.2rem, 6vw, 5rem);
-
+  /*
+   * Three-stop clamp:
+   *   min  – very small phones (< 320 px)
+   *   fluid – scales with viewport width
+   *   max  – large desktop
+   */
+  font-size: clamp(0.75rem, 5.5vw, 5rem);
   line-height: 1.1;
 
   transform: translateY(140vh);
-
-  text-shadow:
-    0 0 8px rgba(255,255,255,0.35);
-
-  will-change:
-    transform,
-    opacity,
-    text-shadow;
-
+  text-shadow: 0 0 8px rgba(255,255,255,0.35);
+  will-change: transform, opacity, text-shadow;
   z-index: 10000;
 
-  animation:
-    letterMove var(--text-duration) ease forwards;
-  animation-delay:
-    calc(var(--glow-visible-delay) + var(--i) * var(--letter-stagger));
+  animation: letterMove var(--text-duration) ease forwards;
+  animation-delay: calc(var(--glow-visible-delay) + var(--i) * var(--letter-stagger));
 }
 
 /* =========================================
@@ -203,30 +267,25 @@ body {
 .center-text::before,
 .center-text::after {
   content: "";
-
   position: absolute;
   top: -20%;
   left: -100%;
-
   width: 200%;
   height: 140%;
-
   pointer-events: none;
-
   background:
     linear-gradient(
       115deg,
-      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0)    0%,
       rgba(255,255,255,0.06) 10%,
       rgba(255,255,255,0.15) 18%,
-      rgba(255,255,255,0.9) 42%,
+      rgba(255,255,255,0.9)  42%,
       rgba(220,220,220,0.95) 50%,
-      rgba(255,255,255,0.9) 58%,
+      rgba(255,255,255,0.9)  58%,
       rgba(255,255,255,0.15) 82%,
       rgba(255,255,255,0.06) 90%,
-      rgba(255,255,255,0) 100%
+      rgba(255,255,255,0)    100%
     );
-
   filter: blur(2px);
   opacity: 0;
 }
@@ -248,37 +307,11 @@ body {
 ========================================= */
 
 @keyframes letterMove {
-
-  /* Start unten */
-  0% {
-    opacity: 0;
-    transform: translateY(120vh);
-  }
-
-  /* Ganz oben */
-  20% {
-    opacity: 1;
-    transform: translateY(-40vh);
-  }
-
-  /* Zur Mitte */
-  35% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* In Mitte bleiben */
-  70% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Nach unten */
-  100% {
-    opacity: 1;
-    transform:
-      translateY(35vh);
-  }
+  0%   { opacity: 0; transform: translateY(120vh); }
+  20%  { opacity: 1; transform: translateY(-40vh); }
+  35%  { opacity: 1; transform: translateY(0);     }
+  70%  { opacity: 1; transform: translateY(0);     }
+  100% { opacity: 1; transform: translateY(35vh);  }
 }
 
 /* =========================================
@@ -286,110 +319,25 @@ body {
 ========================================= */
 
 @keyframes silverSweepMid {
-  0% {
-    left: -160%;
-    opacity: 0;
-  }
-
-  10% {
-    left: -120%;
-    opacity: 0;
-  }
-
-  60% {
-    left: 180%;
-    opacity: 1;
-  }
-
-  70% {
-    left: 180%;
-    opacity: 1;
-  }
-
-  90% {
-    left: 220%;
-    opacity: 0;
-  }
-
-  100% {
-    left: 220%;
-    opacity: 0;
-  }
+  0%   { left: -160%; opacity: 0; }
+  10%  { left: -120%; opacity: 0; }
+  60%  { left:  180%; opacity: 1; }
+  70%  { left:  180%; opacity: 1; }
+  90%  { left:  220%; opacity: 0; }
+  100% { left:  220%; opacity: 0; }
 }
 
 @keyframes silverSweepBottom {
-  0% {
-    left: -160%;
-    opacity: 0;
-  }
-
-  10% {
-    left: -100%;
-    opacity: 0;
-  }
-
-  60% {
-    left: 180%;
-    opacity: 1;
-  }
-
-  70% {
-    left: 180%;
-    opacity: 1;
-  }
-
-  100% {
-    left: 220%;
-    opacity: 0;
-  }
+  0%   { left: -160%; opacity: 0; }
+  10%  { left: -100%; opacity: 0; }
+  60%  { left:  180%; opacity: 1; }
+  70%  { left:  180%; opacity: 1; }
+  100% { left:  220%; opacity: 0; }
 }
 
 /* =========================================
-   RESPONSIVE
+   NAV TOGGLE BUTTON
 ========================================= */
-
-@media (max-height: 850px) {
-
-  .image-wrapper {
-    height: auto;
-    padding-bottom: 0px;
-  }
-
-  .logo {
-    height: auto;
-    min-height: 100dvh;
-    object-fit: cover;
-  }
-}
-
-@media (max-width: 900px) {
-
-  .center-text span {
-    font-size:
-      clamp(1rem, 7vw, 3rem);
-  }
-}
-
-@media (max-width: 600px) {
-
-  .center-text span {
-    font-size:
-      clamp(0.9rem, 8vw, 2rem);
-  }
-}
-
-
-/* =========================================
-   RADIAL NAVIGATION
-========================================= */
-
-:root {
-  --disk-size: clamp(420px, 72vmin, 840px);
-  --disk-opacity: 0.2;
-  --line-alpha: 0.5;
-  --item-width: clamp(120px, 14vw, 180px);
-  --item-radius: calc(var(--disk-size) / 2 + var(--item-width) / 2);
-}
 
 .nav-toggle {
   position: fixed;
@@ -399,116 +347,191 @@ body {
   background: rgba(255,255,255,0.12);
   color: white;
   border: 1px solid rgba(255,255,255,0.5);
-  width: 44px;
-  height: 44px;
+  /* Minimum 44×44 px touch target (WCAG 2.5.5) */
+  min-width: 44px;
+  min-height: 44px;
+  width: clamp(44px, 6vmin, 56px);
+  height: clamp(44px, 6vmin, 56px);
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: clamp(18px, 2.5vmin, 22px);
   cursor: pointer;
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: background 160ms ease;
+  /* Tap highlight on mobile */
+  -webkit-tap-highlight-color: transparent;
 }
 
-.radial-nav {
+.nav-toggle:hover,
+.nav-toggle:focus-visible {
+  background: rgba(255,255,255,0.24);
+  outline: 2px solid rgba(255,255,255,0.5);
+  outline-offset: 2px;
+}
+
+/* =========================================
+   NAV OVERLAY
+========================================= */
+
+.nav-overlay {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: var(--disk-size);
-  height: var(--disk-size);
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 220ms ease;
+  inset: 0;
   z-index: 10040;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
 }
 
-.radial-nav.open {
+.nav-overlay.open {
   opacity: 1;
   pointer-events: auto;
 }
 
-.disk {
+/* =========================================
+   VIEWPORT SHAPE (SVG NAV)
+========================================= */
+
+.viewport-shape {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  position: relative;
-  background:
-    radial-gradient(circle at center, transparent 40%, rgba(255,255,255,var(--disk-opacity)) 41%, rgba(255,255,255,var(--disk-opacity)) 70%, transparent 71%);
-  border: 2px solid rgba(255,255,255,var(--line-alpha));
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,var(--line-alpha)),
-    inset 0 0 0 6px rgba(255,255,255,0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  overflow: visible;
 }
 
-.disk-hole {
-  position: absolute;
-  inset: 22%;
-  border-radius: 50%;
-  background: transparent;
-  pointer-events: auto;
-}
-
-.disk-separators {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-}  
-
-/* .separator {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 1px;
-  height: 44%;
-  background: rgba(255,255,255,var(--line-alpha));
-  transform-origin: bottom;
-  transform: rotate(calc(var(--i) * 45deg));
-} */
-
-.radial-item {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: var(--item-width);
-  transform-origin: center center;
-  transform: rotate(calc(var(--i) * 45deg)) translateY(calc(-1 * var(--item-radius))) rotate(calc(var(--i) * -45deg));
-  color: white;
-  background: rgba(255,255,255,0.16);
-  border: 1px solid rgba(255,255,255,var(--line-alpha));
-  padding: 12px 0;
-  border-radius: 999px;
+.viewport-shape-path {
+  fill: rgba(255,255,255,0.18);
+  stroke: rgba(255,255,255,0.8);
+  stroke-width: 1.5;
   cursor: pointer;
+  transition: fill 160ms ease;
+  pointer-events: all;
+}
+
+.viewport-shape-path:hover,
+.segment-button:focus-visible .viewport-shape-path {
+  fill: rgba(255,255,255,0.44);
+}
+
+.segment-button {
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-marker {
+  pointer-events: none;
+}
+
+.nav-marker > * {
+  fill: rgba(255,255,255,0.8);
+  stroke: rgba(255,255,255,0.8);
+}
+
+.nav-marker polygon,
+.nav-marker rect,
+.nav-marker circle,
+.nav-marker path {
+  stroke: none;
+}
+
+.nav-marker polyline,
+.nav-marker line {
+  fill: none;
+}
+
+/* =========================================
+   HTML LABELS
+========================================= */
+
+.nav-html-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.nav-html-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  color: rgba(255,255,255,0.95);
+  /* Scale label text with viewport */
+  font-size: clamp(10px, 1.6vmin, 13px);
+  font-weight: 600;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  pointer-events: none;
   white-space: nowrap;
-  opacity: 0.92;
-  transition: background 180ms ease, opacity 180ms ease, transform 180ms ease;
-  outline: none;
-  text-align: center;
 }
 
-.radial-item:hover,
-.radial-item:focus {
-  outline: none;
-  box-shadow: none;
-  background: rgba(255,255,255,0.3);
-}
+/* =========================================
+   RESPONSIVE — PORTRAIT PHONES
+   (≤ 480 px wide)
+========================================= */
 
-.radial-item.active {
-  background: rgba(255,255,255,0.4);
-  opacity: 1;
-}
+@media (max-width: 480px) {
 
-/* Make sure the toggle and nav respect reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  .disk,
-  .center-text span,
-  .white-point {
-    animation: none !important;
-    transition: none !important;
+  .center-text span {
+    /* Extra boost for small portrait screens */
+    font-size: clamp(0.7rem, 7.5vw, 2.4rem);
+  }
+
+  /* Bring toggle closer to corner on small screens */
+  .nav-toggle {
+    top: 10px;
+    left: 10px;
   }
 }
 
+/* =========================================
+   RESPONSIVE — TABLETS
+   (481 px – 900 px wide)
+========================================= */
+
+@media (min-width: 481px) and (max-width: 900px) {
+
+  .center-text span {
+    font-size: clamp(1rem, 6.5vw, 3.2rem);
+  }
+}
+
+/* =========================================
+   RESPONSIVE — SHORT VIEWPORTS / LANDSCAPE
+   (height ≤ 500 px)
+========================================= */
+
+@media (max-height: 500px) {
+
+  .logo {
+    object-position: top center;
+  }
+
+  /* In landscape the text animation travels less far */
+  .center-text span {
+    font-size: clamp(0.7rem, 5vh, 2.2rem);
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .center-text span,
+  .white-point {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .nav-overlay,
+  .nav-toggle,
+  .viewport-shape-path {
+    transition: none !important;
+  }
+}
