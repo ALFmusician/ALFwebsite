@@ -5,162 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rosenberg. IT ab Werk.</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-content {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      z-index: 20;
+      pointer-events: none;
+    }
+    .page-title {
+      color: white;
+      font-size: clamp(1.8rem, 5vw, 4rem);
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.3);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: pageIn 0.7s ease forwards 0.15s;
+    }
+    .page-body {
+      color: rgba(255,255,255,0.85);
+      font-size: clamp(0.95rem, 2vw, 1.2rem);
+      font-family: Arial, sans-serif;
+      text-align: center;
+      max-width: 480px;
+      line-height: 1.7;
+      padding: 0 1.5rem;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: pageIn 0.7s ease forwards 0.3s;
+    }
+    @keyframes pageIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
-
 <body>
 
-  <!-- Seitenränder -->
-  <div class="sidebar left"></div>
-  <div class="sidebar right"></div>
-
-  <!-- Glow -->
   <div class="white-point"></div>
 
-  <!-- Nav Toggle Button -->
   <button class="nav-toggle" aria-expanded="false" aria-controls="nav-overlay" aria-label="Navigation öffnen">☰</button>
 
-  <!-- Navigation Overlay -->
   <div id="nav-overlay" class="nav-overlay" aria-hidden="true">
-
     <svg class="viewport-shape" aria-hidden="true">
-
-      <!-- Start: Haus -->
       <g class="segment-button" data-nav="home" data-href="index.html" aria-label="Startseite" role="button" tabindex="-1">
         <path class="viewport-shape-path" d="" />
         <g class="nav-marker" aria-hidden="true">
-          <!-- Dach -->
           <polyline points="-11,2 0,-10 11,2" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" />
-          <!-- Wand -->
           <rect x="-7" y="2" width="14" height="10" rx="1" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" />
-          <!-- Tür -->
           <rect x="-2.5" y="6" width="5" height="6" rx="0.5" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.2" />
         </g>
       </g>
-
-      <!-- Über mich: Person -->
       <g class="segment-button" data-nav="ueber-mich" data-href="ueber-mich.html" aria-label="Über mich" role="button" tabindex="-1">
         <path class="viewport-shape-path" d="" />
         <g class="nav-marker" aria-hidden="true">
-          <!-- Kopf -->
           <circle cx="0" cy="-5" r="4.5" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" />
-          <!-- Schultern -->
           <path d="M-9,12 C-9,5 9,5 9,12" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-linecap="round" />
         </g>
       </g>
-
-      <!-- Kontakt: Briefumschlag -->
       <g class="segment-button" data-nav="kontakt" data-href="kontakt.html" aria-label="Kontakt" role="button" tabindex="-1">
         <path class="viewport-shape-path" d="" />
         <g class="nav-marker" aria-hidden="true">
-          <!-- Hülle -->
           <rect x="-12" y="-8" width="24" height="16" rx="2" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" />
-          <!-- V-Falz -->
           <polyline points="-11,-7 0,2 11,-7" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </g>
       </g>
-
-      <!-- Impressum: Dokument mit i -->
       <g class="segment-button" data-nav="impressum" data-href="impressum.html" aria-label="Impressum" role="button" tabindex="-1">
         <path class="viewport-shape-path" d="" />
         <g class="nav-marker" aria-hidden="true">
-          <!-- Blatt -->
           <path d="M-9,-11 L6,-11 L11,-6 L11,11 L-9,11 Z" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-linejoin="round" />
-          <!-- Ecke umgefaltet -->
           <path d="M6,-11 L6,-6 L11,-6" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-linejoin="round" />
-          <!-- i-Punkt -->
           <circle cx="0" cy="-1" r="1" fill="rgba(255,255,255,0.85)" />
-          <!-- i-Strich -->
           <line x1="0" y1="3" x2="0" y2="7" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-linecap="round" />
         </g>
       </g>
-
     </svg>
-
     <div class="nav-html-labels" aria-hidden="true">
       <span class="nav-html-label" data-label="Start">Start</span>
       <span class="nav-html-label" data-label="Über mich">Über mich</span>
       <span class="nav-html-label" data-label="Kontakt">Kontakt</span>
       <span class="nav-html-label" data-label="Impressum">Impressum</span>
     </div>
-
   </div>
 
-  <!-- Hauptlayout -->
-  <main class="main-wrapper">
-
-    <section class="content">
-
-      <div class="image-wrapper">
-
-        <!-- Bild -->
-        <img
-          src="rbw.png"
-          alt="Rosenberg Logo"
-          class="logo"
-        />
-
-        <!-- Text -->
-        <h1 class="center-text">
-
-          <span style="--i:0">R</span>
-          <span style="--i:1">o</span>
-          <span style="--i:2">s</span>
-          <span style="--i:3">e</span>
-          <span style="--i:4">n</span>
-          <span style="--i:5">b</span>
-          <span style="--i:6">e</span>
-          <span style="--i:7">r</span>
-          <span style="--i:8">g</span>
-          <span style="--i:9">.</span>
-
-          <span style="--i:10">&nbsp;&nbsp;</span>
-
-          <span style="--i:11">I</span>
-          <span style="--i:12">T</span>
-
-          <span style="--i:13">&nbsp;</span>
-
-          <span style="--i:14">a</span>
-          <span style="--i:15">b</span>
-
-          <span style="--i:16">&nbsp;</span>
-
-          <span style="--i:17">W</span>
-          <span style="--i:18">e</span>
-          <span style="--i:19">r</span>
-          <span style="--i:20">k</span>
-          <span style="--i:21">.</span>
-
-        </h1>
-
-      </div>
-
-    </section>
-
-  </main>
+  <div class="page-content">
+    <h1 class="page-title">Impressum</h1>
+    <p class="page-body">Dieser Bereich ist noch in Arbeit.</p>
+  </div>
 
   <script>
-  // ─── Navigation shape geometry ────────────────────────────────────────────
   (function () {
     const shapePaths     = Array.from(document.querySelectorAll('.viewport-shape-path'));
     const navMarkers     = Array.from(document.querySelectorAll('.nav-marker'));
     const segmentBtns    = Array.from(document.querySelectorAll('.segment-button'));
     const navHtmlLabels  = Array.from(document.querySelectorAll('.nav-html-label'));
-    const segmentTargets = ['home', 'ueber-mich', 'kontakt', 'impressum'];
 
     function getRadii() {
-      // Scale rings proportionally to the smaller viewport dimension.
-      // Clamp so the rings never spill outside the screen.
-      const vmin   = Math.min(window.innerWidth, window.innerHeight);
-      const inner  = Math.round(Math.max(60,  Math.min(vmin * 0.22, 140)));
-      const outer  = Math.round(Math.max(110, Math.min(vmin * 0.42, 260)));
+      const vmin  = Math.min(window.innerWidth, window.innerHeight);
+      const inner = Math.round(Math.max(60,  Math.min(vmin * 0.22, 140)));
+      const outer = Math.round(Math.max(110, Math.min(vmin * 0.42, 260)));
       return { inner, outer };
     }
 
     function getLabelOffset() {
-      // Smaller offset on narrow screens so labels don't escape the viewport.
-      const vmin = Math.min(window.innerWidth, window.innerHeight);
-      return Math.round(Math.max(18, vmin * 0.045));
+      return Math.round(Math.max(18, Math.min(window.innerWidth, window.innerHeight) * 0.045));
     }
 
     function updateGeometry() {
@@ -168,7 +121,6 @@
       const cy = window.innerHeight / 2;
       const { inner: innerR, outer: outerR } = getRadii();
       const labelOffset = getLabelOffset();
-
       const pathData = [
         `M ${cx} ${cy - outerR}`,
         `L ${cx} ${cy - innerR}`,
@@ -177,36 +129,26 @@
         `A ${outerR} ${outerR} 0 0 0 ${cx} ${cy - outerR}`,
         'Z'
       ].join(' ');
-
       const markerR   = (innerR + outerR) / 2;
       const angles    = [(7 * Math.PI) / 4, Math.PI / 4, (3 * Math.PI) / 4, (5 * Math.PI) / 4];
       const positions = angles.map(a => ({
         x: Math.round(cx + markerR * Math.cos(a)),
         y: Math.round(cy + markerR * Math.sin(a))
       }));
-
       shapePaths.forEach((path, i) => {
         path.setAttribute('d', pathData);
         const rots = [null, 90, 180, 270];
-        if (rots[i]) {
-          path.setAttribute('transform', `rotate(${rots[i]} ${cx} ${cy})`);
-        } else {
-          path.removeAttribute('transform');
-        }
+        if (rots[i]) path.setAttribute('transform', `rotate(${rots[i]} ${cx} ${cy})`);
+        else path.removeAttribute('transform');
       });
-
-      navMarkers.forEach((marker, i) => {
-        marker.setAttribute('transform', `translate(${positions[i].x} ${positions[i].y})`);
-      });
-
-      navHtmlLabels.forEach((label, i) => {
-        label.style.left = positions[i].x + 'px';
-        label.style.top  = (positions[i].y + labelOffset) + 'px';
+      navMarkers.forEach((m, i) => m.setAttribute('transform', `translate(${positions[i].x} ${positions[i].y})`));
+      navHtmlLabels.forEach((l, i) => {
+        l.style.left = positions[i].x + 'px';
+        l.style.top  = (positions[i].y + labelOffset) + 'px';
       });
     }
 
-    segmentBtns.forEach((btn, i) => {
-      btn.dataset.nav = segmentTargets[i];
+    segmentBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         const href = btn.dataset.href;
         if (href) window.location.href = href;
@@ -217,23 +159,17 @@
     });
 
     let resizeTimer;
-    function onResize() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(updateGeometry, 50);
-    }
-
-    window.addEventListener('resize',            onResize);
+    window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(updateGeometry, 50); });
     window.addEventListener('orientationchange', updateGeometry);
     updateGeometry();
   })();
 
-  // ─── Navigation open / close / auto-hide ─────────────────────────────────
   (function () {
     const toggle  = document.querySelector('.nav-toggle');
     const overlay = document.getElementById('nav-overlay');
     const segBtns = Array.from(overlay.querySelectorAll('.segment-button'));
     const HIDE_MS = 10000;
-    let   hideTimer = null;
+    let hideTimer = null;
 
     function openNav() {
       overlay.classList.add('open');
@@ -243,45 +179,21 @@
       segBtns.forEach(b => b.setAttribute('tabindex', '0'));
       resetTimer();
     }
-
     function closeNav() {
       overlay.classList.remove('open');
       overlay.setAttribute('aria-hidden', 'true');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-label', 'Navigation öffnen');
       segBtns.forEach(b => b.setAttribute('tabindex', '-1'));
-      clearTimeout(hideTimer);
-      hideTimer = null;
+      clearTimeout(hideTimer); hideTimer = null;
     }
+    function resetTimer() { clearTimeout(hideTimer); hideTimer = setTimeout(closeNav, HIDE_MS); }
 
-    function resetTimer() {
-      clearTimeout(hideTimer);
-      hideTimer = setTimeout(closeNav, HIDE_MS);
-    }
-
-    toggle.addEventListener('click', e => {
-      e.stopPropagation();
-      overlay.classList.contains('open') ? closeNav() : openNav();
-    });
-
-    overlay.addEventListener('click', e => {
-      e.stopPropagation();
-      resetTimer();
-    });
-
-    ['mousemove', 'touchstart', 'keydown'].forEach(evt => {
-      document.addEventListener(evt, () => {
-        if (overlay.classList.contains('open')) resetTimer();
-      }, { passive: true });
-    });
-
-    document.addEventListener('click', e => {
-      if (!overlay.contains(e.target) && e.target !== toggle) closeNav();
-    });
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeNav();
-    });
+    toggle.addEventListener('click', e => { e.stopPropagation(); overlay.classList.contains('open') ? closeNav() : openNav(); });
+    overlay.addEventListener('click', e => { e.stopPropagation(); resetTimer(); });
+    ['mousemove','touchstart','keydown'].forEach(evt => document.addEventListener(evt, () => { if (overlay.classList.contains('open')) resetTimer(); }, { passive: true }));
+    document.addEventListener('click', e => { if (!overlay.contains(e.target) && e.target !== toggle) closeNav(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNav(); });
   })();
   </script>
 

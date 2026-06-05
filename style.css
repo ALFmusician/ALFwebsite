@@ -427,21 +427,10 @@ body {
   pointer-events: none;
 }
 
+/* Icons sind rein stroke-basiert – alle fill/stroke-Werte
+   kommen direkt aus dem SVG-Markup (rgba-Werte dort) */
 .nav-marker > * {
-  fill: rgba(255,255,255,0.8);
-  stroke: rgba(255,255,255,0.8);
-}
-
-.nav-marker polygon,
-.nav-marker rect,
-.nav-marker circle,
-.nav-marker path {
-  stroke: none;
-}
-
-.nav-marker polyline,
-.nav-marker line {
-  fill: none;
+  transition: stroke 160ms ease, fill 160ms ease;
 }
 
 /* =========================================
