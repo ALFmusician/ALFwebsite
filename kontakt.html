@@ -43,6 +43,14 @@
     @keyframes pageIn {
       to { opacity: 1; transform: translateY(0); }
     }
+    .page-body a {
+      color: rgba(255,255,255,0.95);
+      text-decoration: underline;
+      pointer-events: auto;
+    }
+    .page-body a:hover {
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -95,9 +103,7 @@
 
   <div class="page-content">
     <h1 class="page-title">Kontakt</h1>
-    <p class="page-body">
-      <a href="mailto:norman@rosenbergwerk.de">norman@rosenbergwerk.de</a>
-    </p>
+    <p class="page-body"><a href="mailto:norman@rosenbergwerk.de">norman@rosenbergwerk.de</a></p>
   </div>
 
   <script>
