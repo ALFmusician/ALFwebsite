@@ -409,7 +409,7 @@ body {
   stroke-width: 1.5;
   cursor: pointer;
   transition: fill 160ms ease;
-  pointer-events: all;
+  pointer-events: inherit;
 }
 
 .viewport-shape-path:hover,
